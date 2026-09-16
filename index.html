@@ -7,7 +7,34 @@
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <h1>Birthday gift</h1>
+    <main class="screen welcome" id="welcome-screen">
+    <div class="welcome__card">
+
+        <p class="welcome__symbol">☾</p>
+
+        <h1>Feliz cumpleaños</h1>
+
+        <p class="welcome__message">
+            Preparé algo especial para ti...
+        </p>
+
+        <button class="welcome__button" id="start-button">
+            Entrar
+        </button>
+
+    </div>
+</main>
+<main class="screen game hidden" id="game-screen">
+    <div class="game__card">
+
+        <p id="question-number"></p>
+
+        <h2 id="question-text"></h2>
+
+        <div id="answer-options"></div>
+
+    </div>
+</main>
     <script src="js/app.js"></script>
 </body>
 </html>
