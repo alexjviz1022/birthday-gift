@@ -5,6 +5,10 @@ const botonComenzar = document.getElementById("start-button")
 const numeroPregunta = document.getElementById("question-number");
 const textoPregunta = document.getElementById("question-text");
 const opcionesRespuesta = document.getElementById("answer-options");
+const marcadorProgreso = document.getElementById("score");
+const mensajeFeedback = document.getElementById("feedback");
+const contenedorRecuerdo = document.getElementById("memory");
+const textoRecuerdo = document.getElementById("memory-text");
 const preguntas = [
     {
         pregunta: "¿Dónde fue nuestra primera cita?",
@@ -14,7 +18,9 @@ const preguntas = [
             "El cine",
             "Otro lugar"
         ],
-        respuestaCorrecta: 0
+        respuestaCorrecta: 0,
+        recuerdo: "Aquí irá un recuerdo especial de nuestra primera cita 🖤",
+        desbloqueada: false
     },
     {
         pregunta: "¿Cuál de estas cosas me recuerda más a ti?",
@@ -24,21 +30,26 @@ const preguntas = [
             "El café",
             "Los gatos"
         ],
-        respuestaCorrecta: 1
+        respuestaCorrecta: 1,
+        recuerdo: "Aquí irá otro recuerdo especial ✨",
+        desbloqueada: false
     }
 ];
 
 let preguntaActual = 0;
+let recuerdosDesbloqueados = 0;
 
 function mostrarPregunta() {
-    const pregunta = preguntas[preguntaActual];
+    const preguntaEnTurno = preguntas[preguntaActual];
 
     numeroPregunta.textContent = `Pregunta ${preguntaActual + 1}`;
-    textoPregunta.textContent = pregunta.pregunta;
+    textoPregunta.textContent = preguntaEnTurno.pregunta;
+    marcadorProgreso.textContent =
+    `Recuerdos: ${recuerdosDesbloqueados} / ${preguntas.length}`;
 
     opcionesRespuesta.innerHTML = "";
 
-    pregunta.opciones.forEach((opcion, indice) => {
+    preguntaEnTurno.opciones.forEach((opcion, indice) => {
         const boton = document.createElement("button");
 
         boton.textContent = opcion;
@@ -52,23 +63,85 @@ function mostrarPregunta() {
 }
 
 function comprobarRespuesta(indiceSeleccionado) {
-    const pregunta = preguntas[preguntaActual];
+    const preguntaEnTurno = preguntas[preguntaActual];
 
-    if (indiceSeleccionado === pregunta.respuestaCorrecta) {
-        console.log("Respuesta correcta");
+    opcionesRespuesta.innerHTML = "";
+
+    if (indiceSeleccionado === preguntaEnTurno.respuestaCorrecta) {
+
+        if (!preguntaEnTurno.desbloqueada) {
+            preguntaEnTurno.desbloqueada = true;
+            recuerdosDesbloqueados++;
+        }
+
+        marcadorProgreso.textContent =
+            `Recuerdos: ${recuerdosDesbloqueados} / ${preguntas.length}`;
+
+        mensajeFeedback.textContent = "¡Recuerdo desbloqueado! 🖤";
+
+        textoRecuerdo.textContent = preguntaEnTurno.recuerdo;
+        contenedorRecuerdo.classList.remove("hidden");
+
     } else {
-        textoPregunta.textContent = "Has terminado esta parte";
-        numeroPregunta.textContent = "";
-        opcionesRespuesta.innerHTML = "";
+        mensajeFeedback.textContent = "Este recuerdo sigue bloqueado 🔒";
     }
-    
+
+    const botonContinuar = document.createElement("button");
+
+    botonContinuar.textContent = "Continuar";
+    botonContinuar.classList.add("answer-button");
+    botonContinuar.addEventListener("click", avanzarPregunta);
+
+    opcionesRespuesta.appendChild(botonContinuar);
+}
+
+function avanzarPregunta() {
     preguntaActual++;
+    mensajeFeedback.textContent = "";
+
+    contenedorRecuerdo.classList.add("hidden");
+    textoRecuerdo.textContent = "";
 
     if (preguntaActual < preguntas.length) {
         mostrarPregunta();
     } else {
-        console.log("Juego terminado");
+        mostrarResultado();
     }
+}
+
+function mostrarResultado() {
+    numeroPregunta.textContent = "Nivel 1";
+
+    opcionesRespuesta.innerHTML = "";
+    mensajeFeedback.textContent = "";
+    contenedorRecuerdo.classList.add("hidden");
+
+    if (recuerdosDesbloqueados === preguntas.length) {
+        textoPregunta.textContent = "¡Nivel completado! 🖤";
+        marcadorProgreso.textContent =
+            `Recuerdos: ${recuerdosDesbloqueados} / ${preguntas.length}`;
+    } else {
+        textoPregunta.textContent =
+            `Has desbloqueado ${recuerdosDesbloqueados} de ${preguntas.length} recuerdos`;
+
+        const botonReintentar = document.createElement("button");
+
+        botonReintentar.textContent = "Jugar de nuevo";
+        botonReintentar.classList.add("answer-button");
+        botonReintentar.addEventListener("click", reiniciarNivel);
+
+        opcionesRespuesta.appendChild(botonReintentar);
+    }
+}
+
+function reiniciarNivel() {
+    preguntaActual = 0;
+
+    mensajeFeedback.textContent = "";
+    contenedorRecuerdo.classList.add("hidden");
+    textoRecuerdo.textContent = "";
+
+    mostrarPregunta();
 }
 
 botonComenzar.addEventListener("click", () => {
@@ -77,4 +150,3 @@ botonComenzar.addEventListener("click", () => {
 
     mostrarPregunta();
 });
-
