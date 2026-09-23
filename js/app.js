@@ -43,10 +43,89 @@ const preguntas = [
         
     }
 ];
+const pantallaRunner = document.getElementById("runner-screen");
+const jugadorRunner = document.getElementById("runner-player");
+const botonSaltar = document.getElementById("runner-jump");
+const botonVolverMapaRunner = document.getElementById("runner-back-to-map");
+const progresoRunner = document.getElementById("runner-progress");
+const obstaculoRunner = document.getElementById("runner-obstacle");
+const botonReintentarRunner = document.getElementById("runner-retry");
 
 let preguntaActual = 0;
 let respuestasCorrectas = 0;
 let nivel1Completado = false;
+let nivel2Completado = false;
+
+//Variables de estado nivel 2
+let alturaJugador = 0;
+let velocidadVertical = 0;
+let saltando = false;
+let posicionObstaculo = -30;
+let runnerActivo = false;
+let progresoNivel2 = 0;
+let ultimoTiempoRunner = 0;
+const duracionRunner = 15000;
+
+function saltar() {
+    if (runnerActivo && !saltando) {
+        velocidadVertical = 12;
+        saltando = true;
+    }
+}
+
+function actualizarJugador() {
+    if (saltando) {
+        alturaJugador += velocidadVertical;
+        velocidadVertical -= 0.7;
+
+        if (alturaJugador <= 0) {
+            alturaJugador = 0;
+            velocidadVertical = 0;
+            saltando = false;
+        }
+
+        jugadorRunner.style.bottom = `${alturaJugador}px`;
+    }
+
+    requestAnimationFrame(actualizarJugador);
+}
+
+function actualizarProgresoRunner(tiempoActual) {
+    if (!runnerActivo) {
+        ultimoTiempoRunner = tiempoActual;
+        requestAnimationFrame(actualizarProgresoRunner);
+        return;
+    }
+
+    const tiempoTranscurrido = tiempoActual - ultimoTiempoRunner;
+
+    progresoNivel2 += tiempoTranscurrido;
+
+    const porcentaje = Math.min(
+        Math.floor((progresoNivel2 / duracionRunner) * 100),
+        100
+    );
+
+    progresoRunner.textContent = `Progreso: ${porcentaje}%`;
+
+    ultimoTiempoRunner = tiempoActual;
+
+    if (progresoNivel2 >= duracionRunner) {
+        ganarRunner();
+    }
+
+    requestAnimationFrame(actualizarProgresoRunner);
+}
+
+function ganarRunner() {
+    runnerActivo = false;
+
+    progresoRunner.textContent = "¡Nivel 2 completado! 🖤";
+
+    nivel2Completado = true;
+
+    guardarProgreso();
+}
 
 function mostrarPregunta() {
     const preguntaEnTurno = preguntas[preguntaActual];
@@ -163,8 +242,69 @@ function reiniciarNivel() {
     mostrarPregunta();
 }
 
+function actualizarObstaculo() {
+    if (runnerActivo) {
+        posicionObstaculo += 5;
+
+        obstaculoRunner.style.right = `${posicionObstaculo}px`;
+
+        if (detectarColision()) {
+            perderRunner();
+        }
+
+        if (posicionObstaculo > 450) {
+            posicionObstaculo = -30;
+        }
+    }
+
+    requestAnimationFrame(actualizarObstaculo);
+}
+
+function detectarColision() {
+    const jugador = jugadorRunner.getBoundingClientRect();
+    const obstaculo = obstaculoRunner.getBoundingClientRect();
+
+    const hayColision =
+        jugador.right > obstaculo.left &&
+        jugador.left < obstaculo.right &&
+        jugador.bottom > obstaculo.top &&
+        jugador.top < obstaculo.bottom;
+
+    return hayColision;
+}
+
+function perderRunner() {
+    runnerActivo = false;
+
+    progresoRunner.textContent = "¡Auch! Chocaste 💥";
+
+    botonSaltar.classList.add("hidden");
+    botonReintentarRunner.classList.remove("hidden");
+}
+
+function reiniciarRunner() {
+    progresoNivel2 = 0;
+    posicionObstaculo = -30;
+
+    alturaJugador = 0;
+    velocidadVertical = 0;
+    saltando = false;
+
+    jugadorRunner.style.bottom = "0px";
+    obstaculoRunner.style.right = "-30px";
+
+    progresoRunner.textContent = "Progreso: 0%";
+
+    botonReintentarRunner.classList.add("hidden");
+    botonSaltar.classList.remove("hidden");
+
+    ultimoTiempoRunner = performance.now();
+    runnerActivo = true;
+}
+
 function guardarProgreso() {
     localStorage.setItem("nivel1Completado", nivel1Completado);
+    localStorage.setItem("nivel2Completado", nivel2Completado);
 }
 
 function actualizarMapa() {
@@ -178,20 +318,41 @@ function actualizarMapa() {
         botonNivel2.disabled = true;
     }
 
-    botonNivel3.disabled = true;
+    if (nivel2Completado) {
+        botonNivel2.textContent = "✓ Nivel 2";
+        botonNivel3.textContent = "Nivel 3";
+        botonNivel3.disabled = false;
+    } else {
+        botonNivel3.textContent = "🔒 Nivel 3";
+        botonNivel3.disabled = true;
+    }
+
     botonNivel4.disabled = true;
     botonNivel5.disabled = true;
 }
 
 function cargarProgreso() {
-    const progresoGuardado = localStorage.getItem("nivel1Completado");
+    const nivel1Guardado = localStorage.getItem("nivel1Completado");
+    const nivel2Guardado = localStorage.getItem("nivel2Completado");
 
-    if (progresoGuardado === "true") {
+    if (nivel1Guardado === "true") {
         nivel1Completado = true;
+    }
+
+    if (nivel2Guardado === "true") {
+        nivel2Completado = true;
     }
 }
 
+botonSaltar.addEventListener("click", saltar);
+
+actualizarJugador();
+
+actualizarObstaculo();
+
 cargarProgreso();
+
+requestAnimationFrame(actualizarProgresoRunner);
 
 botonComenzar.addEventListener("click", () => {
     pantallaBienvenida.classList.add("hidden");
@@ -210,9 +371,31 @@ botonNivel1.addEventListener("click", () => {
     mostrarPregunta();
 });
 
+botonNivel2.addEventListener("click", () => {
+    if (!nivel1Completado) {
+        return;
+    }
+
+    pantallaMapa.classList.add("hidden");
+    pantallaRunner.classList.remove("hidden");
+
+    reiniciarRunner();
+});
+
 botonVolverMapa.addEventListener("click", () => {
     pantallaJuego.classList.add("hidden");
     pantallaMapa.classList.remove("hidden");
 
     actualizarMapa();
 });
+
+botonVolverMapaRunner.addEventListener("click", () => {
+    runnerActivo = false;
+
+    pantallaRunner.classList.add("hidden");
+    pantallaMapa.classList.remove("hidden");
+
+    actualizarMapa();
+});
+
+botonReintentarRunner.addEventListener("click", reiniciarRunner);
