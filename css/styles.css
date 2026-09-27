@@ -173,3 +173,73 @@ body {
 #runner-retry {
     margin-bottom: 12px;
 }
+
+.catch {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+}
+
+.catch__card {
+    width: 100%;
+    max-width: 420px;
+    padding: 28px;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-primary);
+    border-radius: 20px;
+    text-align: center;
+}
+
+.catch__game {
+    position: relative;
+    width: 100%;
+    height: 350px;
+    margin: 24px 0;
+    overflow: hidden;
+    border: 1px solid var(--color-secondary);
+}
+
+.catch__player {
+    position: absolute;
+    width: 60px;
+    height: 30px;
+    left: 50%;
+    bottom: 10px;
+    background-color: var(--color-primary);
+    border-radius: 8px;
+    transform: translateX(-50%);
+}
+
+.catch__controls {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.catch__object {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    top: -30px;
+    left: 50%;
+    background-color: var(--color-accent);
+    border-radius: 50%;
+}
+
+.catch__object[data-tipo="normal"] {
+    background-color: green;
+}
+
+.catch__object[data-tipo="importante"] {
+    background-color: gold;
+}
+
+.catch__object[data-tipo="malo"] {
+    background-color: crimson;
+}
+
+.catch__object[data-tipo="especial"] {
+    background-color: deepskyblue;
+}
