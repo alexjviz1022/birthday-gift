@@ -205,6 +205,9 @@ const modalPremioCupon = document.getElementById("coupon-modal-prize");
 const modalMensajeCupon = document.getElementById("coupon-modal-message");
 const botonCerrarModalCupon = document.getElementById("coupon-modal-close")
 
+const pantallaVideos = document.getElementById("videos-screen");
+const botonVolverVideos = document.getElementById("videos-back");
+
 let preguntaActual = 0;
 let respuestasCorrectas = 0;
 
@@ -1246,4 +1249,14 @@ botonVolverCupones.addEventListener("click", () => {
 
 botonCerrarModalCupon.addEventListener("click", () => {
     modalCupon.classList.add("hidden");
+});
+
+botonVideos.addEventListener("click", () => {
+    pantallaPremios.classList.add("hidden");
+    pantallaVideos.classList.remove("hidden");
+});
+
+botonVolverVideos.addEventListener("click", () => {
+    pantallaVideos.classList.add("hidden");
+    pantallaPremios.classList.remove("hidden");
 });
