@@ -243,3 +243,74 @@ body {
 .catch__object[data-tipo="especial"] {
     background-color: deepskyblue;
 }
+
+.final {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+}
+
+.final__card {
+    width: 100%;
+    max-width: 420px;
+    padding: 32px;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-primary);
+    border-radius: 20px;
+    text-align: center;
+}
+
+.final__symbol {
+    font-size: 3rem;
+    margin-bottom: 16px;
+}
+
+.rewards {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+}
+
+.rewards__card {
+    width: 100%;
+    max-width: 420px;
+    padding: 32px;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-primary);
+    border-radius: 20px;
+    text-align: center;
+}
+
+.rewards__options {
+    display: grid;
+    gap: 16px;
+    margin: 28px 0;
+}
+
+.reward-button {
+    width: 100%;
+    padding: 20px;
+    border: 1px solid var(--color-primary);
+    border-radius: 16px;
+    cursor: pointer;
+}
+
+.reward-button span,
+.reward-button strong,
+.reward-button small {
+    display: block;
+}
+
+.reward-button span {
+    font-size: 2rem;
+    margin-bottom: 8px;
+}
+
+.reward-button strong {
+    font-size: 1.1rem;
+    margin-bottom: 4px;
+}

@@ -17,6 +17,7 @@ const marcadorProgreso = document.getElementById("score");
 const mensajeFeedback = document.getElementById("feedback");
 const contenedorRecuerdo = document.getElementById("memory");
 const textoRecuerdo = document.getElementById("memory-text");
+
 const preguntasNivel1 = [
     {
         pregunta: "¿Dónde fue nuestra primera cita?",
@@ -57,6 +58,33 @@ const preguntasNivel3 = [
         recuerdo: "Otro recuerdo del Nivel 3 ✨"
     }
 ];
+const preguntasNivel5 = [
+    {
+        pregunta: "Pregunta final de prueba 1",
+        opciones: [
+            "Respuesta A",
+            "Respuesta B",
+            "Respuesta C",
+            "Respuesta D"
+        ],
+        respuestaCorrecta: 0,
+        recuerdo: "Recuerdo final de prueba 1 🖤",
+        desbloqueada: false
+    },
+    {
+        pregunta: "Pregunta final de prueba 2",
+        opciones: [
+            "Respuesta A",
+            "Respuesta B",
+            "Respuesta C",
+            "Respuesta D"
+        ],
+        respuestaCorrecta: 2,
+        recuerdo: "Recuerdo final de prueba 2 ✨",
+        desbloqueada: false
+    }
+];
+
 const pantallaRunner = document.getElementById("runner-screen");
 const jugadorRunner = document.getElementById("runner-player");
 const botonSaltar = document.getElementById("runner-jump");
@@ -107,6 +135,16 @@ const tiposObjetosCatch = [
     }
 ];
 
+const pantallaFinal = document.getElementById("final-screen");
+const botonContinuarFinal = document.getElementById("final-continue");
+
+const botonPremios = document.getElementById("rewards-button");
+const pantallaPremios = document.getElementById("rewards-screen");
+
+const botonRuleta = document.getElementById("roulette-button");
+const botonVideos = document.getElementById("videos-button");
+const botonVolverPremios = document.getElementById("rewards-back");
+
 
 let preguntaActual = 0;
 let respuestasCorrectas = 0;
@@ -116,6 +154,7 @@ let nivel1Completado = false;
 let nivel2Completado = false;
 let nivel3Completado = false;
 let nivel4Completado = false;
+let nivel5Completado = false;
 
 let nivelQuizActual = 1;
 let preguntasQuizActual = preguntasNivel1;
@@ -138,6 +177,9 @@ let tiempoRestanteCatch = 30;
 let intervaloCatch = null;
 let objetosCatch = [];
 const cantidadObjetosCatch = 2;
+
+//Variable final estado
+let finalVisto = false;
 
 function iniciarTemporizadorCatch() {
     clearInterval(intervaloCatch);
@@ -487,7 +529,7 @@ function avanzarPregunta() {
 }
 
 function mostrarResultado() {
-    numeroPregunta.textContent = "Nivel 1";
+    numeroPregunta.textContent = `Nivel ${nivelQuizActual}`;
 
     opcionesRespuesta.innerHTML = "";
     mensajeFeedback.textContent = "";
@@ -502,9 +544,25 @@ function mostrarResultado() {
         if (nivelQuizActual === 3) {
             nivel3Completado = true;
         }
+
+        if (nivelQuizActual === 5) {
+            nivel5Completado = true;
+        }
+
         guardarProgreso();
 
         textoPregunta.textContent = "¡Nivel completado! 🖤";
+
+        if (nivelQuizActual === 5 && !finalVisto) {
+            const botonFinal = document.createElement("button");
+
+            botonFinal.textContent = "🎁 Descubrir mi recompensa";
+            botonFinal.classList.add("answer-button");
+
+            botonFinal.addEventListener("click", mostrarFinal);
+
+            opcionesRespuesta.appendChild(botonFinal);
+        }
 
         marcadorProgreso.textContent =
             `Aciertos: ${respuestasCorrectas} / ${preguntasQuizActual.length}`;
@@ -524,6 +582,11 @@ function mostrarResultado() {
 
         opcionesRespuesta.appendChild(botonReintentar);
     }
+}
+
+function mostrarFinal() {
+    pantallaJuego.classList.add("hidden");
+    pantallaFinal.classList.remove("hidden");
 }
 
 function reiniciarNivel() {
@@ -602,6 +665,8 @@ function guardarProgreso() {
     localStorage.setItem("nivel2Completado", nivel2Completado);
     localStorage.setItem("nivel3Completado", nivel3Completado);
     localStorage.setItem("nivel4Completado", nivel4Completado);
+    localStorage.setItem("nivel5Completado", nivel5Completado);
+    localStorage.setItem("finalVisto", finalVisto);
 }
 
 function actualizarMapa() {
@@ -642,6 +707,18 @@ function actualizarMapa() {
     botonNivel5.disabled = true;
     }
 
+    if (nivel5Completado) {
+    botonNivel5.textContent = "✓ Nivel 5";
+
+    if (finalVisto) {
+    botonPremios.textContent = "🎁 Premios";
+    botonPremios.disabled = false;
+    } else {
+        botonPremios.textContent = "🔒 Premios";
+        botonPremios.disabled = true;
+    }
+}
+
 }
 
 function cargarProgreso() {
@@ -649,6 +726,8 @@ function cargarProgreso() {
     const nivel2Guardado = localStorage.getItem("nivel2Completado");
     const nivel3Guardado = localStorage.getItem("nivel3Completado");
     const nivel4Guardado = localStorage.getItem("nivel4Completado");
+    const nivel5Guardado = localStorage.getItem("nivel5Completado");
+    const finalGuardado = localStorage.getItem("finalVisto");
 
     if (nivel1Guardado === "true") {
         nivel1Completado = true;
@@ -664,6 +743,14 @@ function cargarProgreso() {
 
     if (nivel4Guardado === "true") {
     nivel4Completado = true;
+    }
+
+    if (nivel5Guardado === "true") {
+    nivel5Completado = true;
+    }
+
+    if (finalGuardado === "true") {
+    finalVisto = true;
     }
 }
 
@@ -738,6 +825,23 @@ botonNivel4.addEventListener("click", () => {
     reiniciarCatch();
 });
 
+botonNivel5.addEventListener("click", () => {
+    if (!nivel4Completado) {
+        return;
+    }
+
+    pantallaMapa.classList.add("hidden");
+    pantallaJuego.classList.remove("hidden");
+
+    nivelQuizActual = 5;
+    preguntasQuizActual = preguntasNivel5;
+
+    preguntaActual = 0;
+    respuestasCorrectas = 0;
+
+    mostrarPregunta();
+});
+
 botonCatchIzquierda.addEventListener("click", () => {
     moverJugadorCatch(-5);
 });
@@ -774,3 +878,29 @@ botonVolverMapaCatch.addEventListener("click", () => {
 
 botonReintentarRunner.addEventListener("click", reiniciarRunner);
 botonReintentarCatch.addEventListener("click", reiniciarCatch);
+
+botonContinuarFinal.addEventListener("click", () => {
+    finalVisto = true;
+    guardarProgreso();
+
+    pantallaFinal.classList.add("hidden");
+    pantallaMapa.classList.remove("hidden");
+
+    actualizarMapa();
+});
+
+botonPremios.addEventListener("click", () => {
+    if (!finalVisto) {
+        return;
+    }
+
+    pantallaMapa.classList.add("hidden");
+    pantallaPremios.classList.remove("hidden");
+});
+
+botonVolverPremios.addEventListener("click", () => {
+    pantallaPremios.classList.add("hidden");
+    pantallaMapa.classList.remove("hidden");
+
+    actualizarMapa();
+});
