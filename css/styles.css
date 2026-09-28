@@ -314,3 +314,115 @@ body {
     font-size: 1.1rem;
     margin-bottom: 4px;
 }
+
+.roulette {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+}
+
+.roulette__card {
+    width: 100%;
+    max-width: 420px;
+    padding: 32px;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-primary);
+    border-radius: 20px;
+    text-align: center;
+}
+
+.roulette__wheel {
+    position: relative;
+    width: 260px;
+    height: 260px;
+    margin: 32px auto;
+    border-radius: 50%;
+
+    background: conic-gradient(
+        blue 0deg 90deg,
+        yellow 90deg 180deg,
+        green 180deg 270deg,
+        red 270deg 360deg
+    );
+
+    border: 5px solid var(--color-primary);
+}
+
+.roulette__pointer {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 2rem;
+}
+
+.roulette__result {
+    margin: 24px 0;
+}
+
+#spin-button {
+    margin-bottom: 20px;
+}
+
+#roulette-back {
+    margin-top: 20px;
+}
+
+.coupon-modal {
+    position: fixed;
+    inset: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 24px;
+
+    background-color: rgba(0, 0, 0, 0.7);
+
+    z-index: 1000;
+}
+
+.coupon-modal__content {
+    width: 100%;
+    max-width: 360px;
+
+    padding: 28px;
+
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-primary);
+    border-radius: 20px;
+
+    text-align: center;
+}
+
+.coupons {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+}
+
+.coupons__card {
+    width: 100%;
+    max-width: 420px;
+
+    padding: 32px;
+
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-primary);
+    border-radius: 20px;
+
+    text-align: center;
+}
+
+.coupon-card {
+    margin: 16px 0;
+    padding: 18px;
+
+    border: 1px solid var(--color-primary);
+    border-radius: 16px;
+}

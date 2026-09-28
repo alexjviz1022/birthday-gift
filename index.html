@@ -185,6 +185,11 @@
                 <strong>Ruleta</strong>
                 <small>Canjea una recompensa</small>
             </button>
+            <button class="reward-button" id="coupons-button">
+                <span>🎟️</span>
+                <strong>Mis cupones</strong>
+                <small>Revisa tus recompensas disponibles</small>
+            </button>
 
             <button class="reward-button" id="videos-button">
                 <span>🎬</span>
@@ -196,6 +201,69 @@
 
         <button class="answer-button" id="rewards-back">
             Volver al mapa
+        </button>
+
+    </div>
+</main>
+<main class="screen roulette hidden" id="roulette-screen">
+    <div class="roulette__card">
+
+        <h1>Ruleta de recompensas 🎡</h1>
+
+        <p>Gira la ruleta y descubre qué te toca...</p>
+
+        <div class="roulette__wheel" id="roulette-wheel">
+            <div class="roulette__pointer">▼</div>
+        </div>
+
+        <button class="welcome__button" id="spin-button">
+            Girar ruleta
+        </button>
+
+        <div class="roulette__result hidden" id="roulette-result">
+            <p id="roulette-category"></p>
+            <h2 id="roulette-prize"></h2>
+        </div>
+
+        <button class="answer-button" id="roulette-back">
+            Volver a premios
+        </button>
+
+    </div>
+    <div class="coupon-modal hidden" id="coupon-modal">
+
+    <div class="coupon-modal__content">
+
+        <p id="coupon-modal-title">🎟️ ¡Nuevo cupón!</p>
+
+        <p id="coupon-modal-category"></p>
+
+        <h2 id="coupon-modal-prize"></h2>
+
+        <p id="coupon-modal-message">
+            Tu recompensa ha sido guardada en Mis cupones.
+        </p>
+
+        <button class="welcome__button" id="coupon-modal-close">
+            Guardar cupón 🖤
+        </button>
+
+    </div>
+</div>
+</main>
+<main class="screen coupons hidden" id="coupons-screen">
+    <div class="coupons__card">
+
+        <h1>Mis cupones 🎟️</h1>
+
+        <p>
+            Estas son tus recompensas disponibles.
+        </p>
+
+        <div id="coupons-list"></div>
+
+        <button class="answer-button" id="coupons-back">
+            Volver a premios
         </button>
 
     </div>

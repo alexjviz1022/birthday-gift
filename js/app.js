@@ -145,6 +145,65 @@ const botonRuleta = document.getElementById("roulette-button");
 const botonVideos = document.getElementById("videos-button");
 const botonVolverPremios = document.getElementById("rewards-back");
 
+const pantallaRuleta = document.getElementById("roulette-screen");
+const ruedaRuleta = document.getElementById("roulette-wheel");
+
+const botonGirarRuleta = document.getElementById("spin-button");
+const botonVolverRuleta = document.getElementById("roulette-back");
+
+const resultadoRuleta = document.getElementById("roulette-result");
+const categoriaRuleta = document.getElementById("roulette-category");
+const premioRuleta = document.getElementById("roulette-prize");
+const categoriasRuleta = [
+    {
+        nombre: "Azul",
+        probabilidad: 50,
+        premios: [
+            "Masaje de pies",
+            "Dulce favorito",
+            "Premio azul de prueba 3"
+        ]
+    },
+    {
+        nombre: "Amarillo",
+        probabilidad: 30,
+        premios: [
+            "Una rosa",
+            "Paseo en el parque",
+            "Premio amarillo de prueba 3"
+        ]
+    },
+    {
+        nombre: "Verde",
+        probabilidad: 15,
+        premios: [
+            "Salida al cine",
+            "Cena",
+            "Premio verde de prueba 3"
+        ]
+    },
+    {
+        nombre: "Rojo",
+        probabilidad: 5,
+        premios: [
+            "Un juguete",
+            "Una muñeca",
+            "Premio rojo de prueba 3"
+        ]
+    }
+];
+
+const botonCupones = document.getElementById("coupons-button");
+const pantallaCupones = document.getElementById("coupons-screen");
+const listaCupones = document.getElementById("coupons-list");
+const botonVolverCupones = document.getElementById("coupons-back");
+
+const modalCupon = document.getElementById("coupon-modal");
+const modalTituloCupon = document.getElementById("coupon-modal-title");
+const modalCategoriaCupon = document.getElementById("coupon-modal-category");
+const modalPremioCupon = document.getElementById("coupon-modal-prize");
+const modalMensajeCupon = document.getElementById("coupon-modal-message");
+const botonCerrarModalCupon = document.getElementById("coupon-modal-close")
 
 let preguntaActual = 0;
 let respuestasCorrectas = 0;
@@ -180,6 +239,193 @@ const cantidadObjetosCatch = 2;
 
 //Variable final estado
 let finalVisto = false;
+
+//Variable de cupon
+let cuponesDesbloqueados = [];
+const diasValidezCupon = 7;
+
+//Variables ruleta
+let historialPremiosRuleta = [];
+let ultimaTiradaRuleta = null;
+
+
+function obtenerFechaActual() {
+    return new Date().toISOString().split("T")[0];
+}
+
+function puedeGirarRuleta() {
+    const fechaActual = obtenerFechaActual();
+
+    return ultimaTiradaRuleta !== fechaActual;
+}
+
+function cargarUltimaTiradaRuleta() {
+    ultimaTiradaRuleta =
+        localStorage.getItem("ultimaTiradaRuleta");
+}
+
+function guardarHistorialRuleta() {
+    localStorage.setItem(
+        "historialPremiosRuleta",
+        JSON.stringify(historialPremiosRuleta)
+    );
+}
+
+function cargarHistorialRuleta() {
+    const historialGuardado =
+        localStorage.getItem("historialPremiosRuleta");
+
+    if (historialGuardado) {
+        historialPremiosRuleta =
+            JSON.parse(historialGuardado);
+    }
+}
+
+function guardarCupon(premio, categoria) {
+    const fechaObtenido = Date.now();
+
+    const fechaCaducidad =
+        fechaObtenido + diasValidezCupon * 24 * 60 * 60 * 1000;
+
+    const nuevoCupon = {
+        premio: premio,
+        categoria: categoria,
+        fechaObtenido: fechaObtenido,
+        fechaCaducidad: fechaCaducidad
+    };
+
+    cuponesDesbloqueados.push(nuevoCupon);
+
+    localStorage.setItem(
+        "cuponesDesbloqueados",
+        JSON.stringify(cuponesDesbloqueados)
+    );
+}
+
+function cargarCupones() {
+    const cuponesGuardados =
+        localStorage.getItem("cuponesDesbloqueados");
+
+    if (cuponesGuardados) {
+        cuponesDesbloqueados = JSON.parse(cuponesGuardados);
+    }
+
+    eliminarCuponesVencidos();
+}
+
+function eliminarCuponesVencidos() {
+    const fechaActual = Date.now();
+
+    cuponesDesbloqueados = cuponesDesbloqueados.filter((cupon) => {
+        return cupon.fechaCaducidad > fechaActual;
+    });
+
+    localStorage.setItem(
+        "cuponesDesbloqueados",
+        JSON.stringify(cuponesDesbloqueados)
+    );
+}
+
+function mostrarCupones() {
+    eliminarCuponesVencidos();
+
+    listaCupones.innerHTML = "";
+
+    if (cuponesDesbloqueados.length === 0) {
+        listaCupones.textContent =
+            "Todavía no tienes cupones disponibles.";
+
+        return;
+    }
+
+    cuponesDesbloqueados.forEach((cupon) => {
+        const tarjeta = document.createElement("div");
+        tarjeta.classList.add("coupon-card");
+
+        const premio = document.createElement("h3");
+        premio.textContent = cupon.premio;
+
+        const categoria = document.createElement("p");
+        categoria.textContent = `Categoría ${cupon.categoria}`;
+
+        const fecha = document.createElement("p");
+
+        const fechaCaducidad =
+            new Date(cupon.fechaCaducidad);
+
+        fecha.textContent =
+            `Disponible hasta: ${fechaCaducidad.toLocaleDateString()}`;
+
+        const botonCanjear = document.createElement("button");
+
+        botonCanjear.textContent = "Canjear";
+        botonCanjear.classList.add("answer-button");
+
+        botonCanjear.addEventListener("click", () => {
+            canjearCupon(cupon);
+        });
+
+        tarjeta.appendChild(premio);
+        tarjeta.appendChild(categoria);
+        tarjeta.appendChild(fecha);
+        tarjeta.appendChild(botonCanjear);
+        listaCupones.appendChild(tarjeta);
+    });
+}
+
+function canjearCupon(cuponSeleccionado) {
+    const confirmarCanje = confirm(
+        `¿Seguro que quieres canjear "${cuponSeleccionado.premio}"?`
+    );
+
+    if (!confirmarCanje) {
+        return;
+    }
+
+    cuponesDesbloqueados =
+        cuponesDesbloqueados.filter((cupon) => {
+            return cupon !== cuponSeleccionado;
+        });
+
+    localStorage.setItem(
+        "cuponesDesbloqueados",
+        JSON.stringify(cuponesDesbloqueados)
+    );
+
+    mostrarCupones();
+}
+
+function seleccionarCategoriaRuleta() {
+    const numeroAleatorio = Math.random() * 100;
+
+    let acumulado = 0;
+
+    for (const categoria of categoriasRuleta) {
+        acumulado += categoria.probabilidad;
+
+        if (numeroAleatorio < acumulado) {
+            return categoria;
+        }
+    }
+
+    return categoriasRuleta[0];
+}
+
+function seleccionarPremioRuleta(categoria) {
+    const premiosDisponibles = categoria.premios.filter((premio) => {
+        return !historialPremiosRuleta.includes(premio);
+    });
+
+    if (premiosDisponibles.length === 0) {
+        return null;
+    }
+
+    const indiceAleatorio = Math.floor(
+        Math.random() * premiosDisponibles.length
+    );
+
+    return premiosDisponibles[indiceAleatorio];
+}
 
 function iniciarTemporizadorCatch() {
     clearInterval(intervaloCatch);
@@ -764,6 +1010,12 @@ actualizarObjetoCatch();
 
 cargarProgreso();
 
+cargarCupones();
+
+cargarHistorialRuleta();
+
+cargarUltimaTiradaRuleta();
+
 requestAnimationFrame(actualizarProgresoRunner);
 
 botonComenzar.addEventListener("click", () => {
@@ -903,4 +1155,95 @@ botonVolverPremios.addEventListener("click", () => {
     pantallaMapa.classList.remove("hidden");
 
     actualizarMapa();
+});
+
+botonRuleta.addEventListener("click", () => {
+    pantallaPremios.classList.add("hidden");
+    pantallaRuleta.classList.remove("hidden");
+
+    resultadoRuleta.classList.add("hidden");
+});
+
+botonVolverRuleta.addEventListener("click", () => {
+    pantallaRuleta.classList.add("hidden");
+    pantallaPremios.classList.remove("hidden");
+});
+
+botonGirarRuleta.addEventListener("click", () => {
+    if (!puedeGirarRuleta()) {
+        modalTituloCupon.textContent = "🔒 Ruleta bloqueada";
+        modalCategoriaCupon.textContent = "";
+        modalPremioCupon.textContent =
+            "Ya utilizaste tu tirada de hoy. Vuelve mañana 🖤";
+        modalMensajeCupon.textContent = "";
+
+        botonCerrarModalCupon.textContent = "Entendido";
+
+        modalCupon.classList.remove("hidden");
+
+        return;
+    }
+
+    const categoriaSeleccionada =
+        seleccionarCategoriaRuleta();
+
+    const premioSeleccionado =
+        seleccionarPremioRuleta(categoriaSeleccionada);
+
+    if (!premioSeleccionado) {
+        return;
+    }
+
+    historialPremiosRuleta.push(premioSeleccionado);
+
+    if (historialPremiosRuleta.length > 10) {
+        historialPremiosRuleta.shift();
+    }
+
+    guardarHistorialRuleta();
+
+    guardarCupon(
+        premioSeleccionado,
+        categoriaSeleccionada.nombre
+    );
+
+    ultimaTiradaRuleta = obtenerFechaActual();
+
+    localStorage.setItem(
+        "ultimaTiradaRuleta",
+        ultimaTiradaRuleta
+    );
+
+    botonCerrarModalCupon.textContent = "Guardar cupón 🖤";
+
+    modalTituloCupon.textContent = "🎟️ ¡Nuevo cupón!";
+
+    modalCategoriaCupon.textContent =
+        `Categoría ${categoriaSeleccionada.nombre}`;
+
+    modalPremioCupon.textContent =
+        premioSeleccionado;
+
+    modalMensajeCupon.textContent =
+        "Tu recompensa ha sido guardada en Mis cupones.";
+
+    botonCerrarModalCupon.textContent = "Guardar cupón 🖤";
+
+    modalCupon.classList.remove("hidden");
+});
+
+botonCupones.addEventListener("click", () => {
+    pantallaPremios.classList.add("hidden");
+    pantallaCupones.classList.remove("hidden");
+
+    mostrarCupones();
+});
+
+botonVolverCupones.addEventListener("click", () => {
+    pantallaCupones.classList.add("hidden");
+    pantallaPremios.classList.remove("hidden");
+});
+
+botonCerrarModalCupon.addEventListener("click", () => {
+    modalCupon.classList.add("hidden");
 });
