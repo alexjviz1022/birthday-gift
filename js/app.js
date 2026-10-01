@@ -92,6 +92,7 @@ const botonVolverMapaRunner = document.getElementById("runner-back-to-map");
 const progresoRunner = document.getElementById("runner-progress");
 const obstaculoRunner = document.getElementById("runner-obstacle");
 const botonReintentarRunner = document.getElementById("runner-retry");
+const botonSiguienteRunner = document.getElementById("runner-next-level");
 
 const pantallaCatch = document.getElementById("catch-screen");
 const juegoCatch = document.getElementById("catch-game");
@@ -103,6 +104,7 @@ const botonCatchDerecha = document.getElementById("catch-right");
 const botonVolverMapaCatch = document.getElementById("catch-back-to-map");
 const tiempoCatch = document.getElementById("catch-time");
 const botonReintentarCatch = document.getElementById("catch-retry");
+const botonSiguienteCatch = document.getElementById("catch-next-level");
 
 const tiposObjetosCatch = [
     {
@@ -208,6 +210,16 @@ const botonCerrarModalCupon = document.getElementById("coupon-modal-close")
 const pantallaVideos = document.getElementById("videos-screen");
 const botonVolverVideos = document.getElementById("videos-back");
 
+const pantallaInicioNivel = document.getElementById("level-intro");
+const textoInicioNivel = document.getElementById("level-intro-placeholder");
+const botonComenzarNivel = document.getElementById("level-intro-start");
+const botonVolverInicioNivel = document.getElementById("level-intro-back");
+
+const pantallaContador = document.getElementById("countdown-screen");
+const textoContador = document.getElementById("countdown-text");
+
+let nivelSeleccionado = null;
+
 let preguntaActual = 0;
 let respuestasCorrectas = 0;
 
@@ -251,6 +263,39 @@ const diasValidezCupon = 7;
 let historialPremiosRuleta = [];
 let ultimaTiradaRuleta = null;
 
+
+function mostrarInicioNivel(numeroNivel) {
+    nivelSeleccionado = numeroNivel;
+
+    pantallaMapa.classList.add("hidden");
+    pantallaInicioNivel.classList.remove("hidden");
+
+    textoInicioNivel.textContent = `Nivel ${numeroNivel}`;
+}
+
+function iniciarCuentaRegresiva(callback) {
+    pantallaContador.classList.remove("hidden");
+
+    let cuenta = 3;
+
+    textoContador.textContent = cuenta;
+
+    const intervalo = setInterval(() => {
+        cuenta--;
+
+        if (cuenta > 0) {
+            textoContador.textContent = cuenta;
+        } else if (cuenta === 0) {
+            textoContador.textContent = "¡GO!";
+        } else {
+            clearInterval(intervalo);
+
+            pantallaContador.classList.add("hidden");
+
+            callback();
+        }
+    }, 1000);
+}
 
 function obtenerFechaActual() {
     return new Date().toISOString().split("T")[0];
@@ -616,6 +661,9 @@ function ganarCatch() {
 
     progresoCatch.textContent = "¡Nivel 4 completado! 🖤";
     tiempoCatch.textContent = "¡Lo lograste!";
+
+    botonReintentarCatch.classList.add("hidden");
+    botonSiguienteCatch.classList.remove("hidden");
 }
 
 function perderCatch() {
@@ -640,6 +688,7 @@ function reiniciarCatch() {
     tiempoCatch.textContent = `Tiempo: ${tiempoRestanteCatch}s`;
 
     botonReintentarCatch.classList.add("hidden");
+    botonSiguienteCatch.classList.add("hidden");
 
     catchActivo = true;
 
@@ -705,6 +754,10 @@ function ganarRunner() {
     nivel2Completado = true;
 
     guardarProgreso();
+
+    botonSaltar.classList.add("hidden");
+    botonReintentarRunner.classList.add("hidden");
+    botonSiguienteRunner.classList.remove("hidden");
 }
 
 function mostrarPregunta() {
@@ -786,6 +839,7 @@ function mostrarResultado() {
     textoRecuerdo.textContent = "";
 
     if (respuestasCorrectas === preguntasQuizActual.length) {
+
         if (nivelQuizActual === 1) {
             nivel1Completado = true;
         }
@@ -802,19 +856,29 @@ function mostrarResultado() {
 
         textoPregunta.textContent = "¡Nivel completado! 🖤";
 
-        if (nivelQuizActual === 5 && !finalVisto) {
-            const botonFinal = document.createElement("button");
-
-            botonFinal.textContent = "🎁 Descubrir mi recompensa";
-            botonFinal.classList.add("answer-button");
-
-            botonFinal.addEventListener("click", mostrarFinal);
-
-            opcionesRespuesta.appendChild(botonFinal);
-        }
-
         marcadorProgreso.textContent =
             `Aciertos: ${respuestasCorrectas} / ${preguntasQuizActual.length}`;
+
+        const botonContinuarNivel = document.createElement("button");
+        botonContinuarNivel.classList.add("answer-button");
+
+        if (nivelQuizActual === 5) {
+            botonContinuarNivel.textContent = "Continuar";
+
+            botonContinuarNivel.addEventListener("click", () => {
+                mostrarFinal();
+            });
+        } else {
+            botonContinuarNivel.textContent = "Siguiente nivel";
+
+            botonContinuarNivel.addEventListener("click", () => {
+                pantallaJuego.classList.add("hidden");
+
+                mostrarInicioNivel(nivelQuizActual + 1);
+            });
+        }
+
+        opcionesRespuesta.appendChild(botonContinuarNivel);
 
     } else {
         textoPregunta.textContent =
@@ -903,6 +967,7 @@ function reiniciarRunner() {
     progresoRunner.textContent = "Progreso: 0%";
 
     botonReintentarRunner.classList.add("hidden");
+    botonSiguienteRunner.classList.add("hidden");
     botonSaltar.classList.remove("hidden");
 
     ultimoTiempoRunner = performance.now();
@@ -1003,6 +1068,30 @@ function cargarProgreso() {
     }
 }
 
+function iniciarNivelQuiz(numeroNivel, preguntasNivel) {
+    pantallaJuego.classList.remove("hidden");
+
+    nivelQuizActual = numeroNivel;
+    preguntasQuizActual = preguntasNivel;
+
+    preguntaActual = 0;
+    respuestasCorrectas = 0;
+
+    mostrarPregunta();
+}
+
+function iniciarNivelRunner() {
+    pantallaRunner.classList.remove("hidden");
+
+    reiniciarRunner();
+}
+
+function iniciarNivelCatch() {
+    pantallaCatch.classList.remove("hidden");
+
+    reiniciarCatch();
+}
+
 botonSaltar.addEventListener("click", saltar);
 
 actualizarJugador();
@@ -1029,16 +1118,7 @@ botonComenzar.addEventListener("click", () => {
 });
 
 botonNivel1.addEventListener("click", () => {
-    pantallaMapa.classList.add("hidden");
-    pantallaJuego.classList.remove("hidden");
-
-    nivelQuizActual = 1;
-    preguntasQuizActual = preguntasNivel1;
-
-    preguntaActual = 0;
-    respuestasCorrectas = 0;
-
-    mostrarPregunta();
+    mostrarInicioNivel(1);
 });
 
 botonNivel2.addEventListener("click", () => {
@@ -1046,10 +1126,7 @@ botonNivel2.addEventListener("click", () => {
         return;
     }
 
-    pantallaMapa.classList.add("hidden");
-    pantallaRunner.classList.remove("hidden");
-
-    reiniciarRunner();
+    mostrarInicioNivel(2);
 });
 
 botonNivel3.addEventListener("click", () => {
@@ -1057,16 +1134,7 @@ botonNivel3.addEventListener("click", () => {
         return;
     }
 
-    pantallaMapa.classList.add("hidden");
-    pantallaJuego.classList.remove("hidden");
-
-    nivelQuizActual = 3;
-    preguntasQuizActual = preguntasNivel3;
-
-    preguntaActual = 0;
-    respuestasCorrectas = 0;
-
-    mostrarPregunta();
+    mostrarInicioNivel(3);
 });
 
 botonNivel4.addEventListener("click", () => {
@@ -1074,10 +1142,7 @@ botonNivel4.addEventListener("click", () => {
         return;
     }
 
-    pantallaMapa.classList.add("hidden");
-    pantallaCatch.classList.remove("hidden");
-
-    reiniciarCatch();
+    mostrarInicioNivel(4);
 });
 
 botonNivel5.addEventListener("click", () => {
@@ -1085,16 +1150,42 @@ botonNivel5.addEventListener("click", () => {
         return;
     }
 
-    pantallaMapa.classList.add("hidden");
-    pantallaJuego.classList.remove("hidden");
+    mostrarInicioNivel(5);
+});
 
-    nivelQuizActual = 5;
-    preguntasQuizActual = preguntasNivel5;
+botonComenzarNivel.addEventListener("click", () => {
+    pantallaInicioNivel.classList.add("hidden");
 
-    preguntaActual = 0;
-    respuestasCorrectas = 0;
+    if (nivelSeleccionado === 1) {
+        iniciarNivelQuiz(1, preguntasNivel1);
+    }
 
-    mostrarPregunta();
+    if (nivelSeleccionado === 2) {
+        iniciarCuentaRegresiva(() => {
+            iniciarNivelRunner();
+        });
+    }
+
+    if (nivelSeleccionado === 3) {
+        iniciarNivelQuiz(3, preguntasNivel3);
+    }
+
+    if (nivelSeleccionado === 4) {
+        iniciarCuentaRegresiva(() => {
+            iniciarNivelCatch();
+        });
+    }
+
+    if (nivelSeleccionado === 5) {
+        iniciarNivelQuiz(5, preguntasNivel5);
+    }
+});
+
+botonVolverInicioNivel.addEventListener("click", () => {
+    pantallaInicioNivel.classList.add("hidden");
+    pantallaMapa.classList.remove("hidden");
+
+    nivelSeleccionado = null;
 });
 
 botonCatchIzquierda.addEventListener("click", () => {
@@ -1132,14 +1223,31 @@ botonVolverMapaCatch.addEventListener("click", () => {
 });
 
 botonReintentarRunner.addEventListener("click", reiniciarRunner);
+botonSiguienteRunner.addEventListener("click", () => {
+    runnerActivo = false;
+
+    pantallaRunner.classList.add("hidden");
+
+    mostrarInicioNivel(3);
+});
+
 botonReintentarCatch.addEventListener("click", reiniciarCatch);
+
+botonSiguienteCatch.addEventListener("click", () => {
+    catchActivo = false;
+    clearInterval(intervaloCatch);
+
+    pantallaCatch.classList.add("hidden");
+
+    mostrarInicioNivel(5);
+});
 
 botonContinuarFinal.addEventListener("click", () => {
     finalVisto = true;
     guardarProgreso();
 
     pantallaFinal.classList.add("hidden");
-    pantallaMapa.classList.remove("hidden");
+    pantallaPremios.classList.remove("hidden");
 
     actualizarMapa();
 });

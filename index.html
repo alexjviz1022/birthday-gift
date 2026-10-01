@@ -57,6 +57,28 @@
 
     </div>
 </main>
+<main class="screen level-intro hidden" id="level-intro">
+    <div class="level-intro__content">
+
+        <div class="level-intro__image">
+            <p id="level-intro-placeholder">Nivel</p>
+        </div>
+
+        <button class="welcome__button" id="level-intro-start">
+            Comenzar nivel
+        </button>
+
+        <button class="answer-button" id="level-intro-back">
+            Volver al mapa
+        </button>
+
+    </div>
+</main>
+<main class="screen countdown hidden" id="countdown-screen">
+    <div class="countdown__content">
+        <p id="countdown-text">3</p>
+    </div>
+</main>
 <main class="screen game hidden" id="game-screen">
     <div class="game__card">
 
@@ -101,6 +123,10 @@
         Intentar de nuevo
         </button>
 
+        <button class="answer-button hidden" id="runner-next-level">
+            Siguiente nivel
+        </button>
+
         <button class="answer-button" id="runner-back-to-map">
             Volver al mapa
         </button>
@@ -137,6 +163,10 @@
             Intentar de nuevo
             </button>
         </div>
+        
+        <button class="answer-button hidden" id="catch-next-level">
+            Siguiente nivel
+        </button>
 
         <button class="answer-button" id="catch-back-to-map">
             Volver al mapa

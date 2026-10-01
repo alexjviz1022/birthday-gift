@@ -483,3 +483,57 @@ body {
 .video-card p {
     margin: 0 16px 18px;
 }
+
+.level-intro {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+}
+
+.level-intro__content {
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+}
+
+.level-intro__image {
+    min-height: 500px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin-bottom: 24px;
+
+    border: 1px solid var(--color-primary);
+    border-radius: 20px;
+
+    background-color: var(--color-surface);
+}
+
+.level-intro__image p {
+    font-size: 2rem;
+}
+
+#level-intro-start {
+    margin-bottom: 16px;
+}
+
+.countdown {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.countdown__content {
+    text-align: center;
+}
+
+#countdown-text {
+    margin: 0;
+    font-size: 6rem;
+    font-weight: bold;
+}
