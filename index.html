@@ -8,22 +8,48 @@
 </head>
 <body>
     <main class="screen welcome" id="welcome-screen">
-    <div class="welcome__card">
 
-        <p class="welcome__symbol">☾</p>
+        <div class="welcome__background"></div>
 
-        <h1>Feliz cumpleaños</h1>
+        <div class="welcome__overlay"></div>
 
-        <p class="welcome__message">
-            Preparé algo especial para ti...
-        </p>
+        <div class="welcome__content">
 
-        <button class="welcome__button" id="start-button">
-            Entrar
-        </button>
+            <div class="welcome__logo">
+                <span class="welcome__logo-luke">Luke</span>
 
-    </div>
-</main>
+                <span class="welcome__logo-and">&</span>
+
+                <span class="welcome__logo-floky">Floky</span>
+            </div>
+            <div class="welcome__characters">
+                <img
+                    src="img/luke-floky.png"
+                    alt="Luke y Floky"
+                    class="welcome__characters-image"
+                >
+            </div>
+            <div class="welcome__adventure-card">
+                <p>
+                    Acompaña a <strong>Luke y Floky</strong> en este camino
+                    lleno de retos, juegos y sorpresas.
+                </p>
+
+                <p>
+                    Desbloquea todos los niveles para descubrir
+                    <strong>las recompensas que te esperan.</strong>
+                </p>
+            </div>
+
+            <button class="welcome__button" id="start-button">
+                <span>🐾</span>
+                Comenzar
+                <span>🐾</span>
+            </button>
+
+        </div>
+
+    </main>
 <main class="screen level-map hidden" id="level-map">
     <div class="level-map__card">
 
