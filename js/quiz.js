@@ -15,7 +15,7 @@ let preguntasQuizActual = [];
 
 let alCompletarQuiz = null;
 let alContinuarQuiz = null;
-
+let alFallarQuiz = null;
 
 function mostrarPregunta() {
     const preguntaEnTurno =
@@ -160,31 +160,10 @@ function mostrarResultado() {
             botonContinuarNivel
         );
     } else {
-        textoPregunta.textContent =
-            `Conseguiste ${respuestasCorrectas} de ${preguntasQuizActual.length} respuestas correctas`;
-
-        marcadorProgreso.textContent =
-            `Aciertos: ${respuestasCorrectas} / ${preguntasQuizActual.length}`;
-
-        const botonReintentar =
-            document.createElement("button");
-
-        botonReintentar.textContent =
-            "Intentar de nuevo";
-
-        botonReintentar.classList.add(
-            "answer-button"
-        );
-
-        botonReintentar.addEventListener(
-            "click",
-            reiniciarNivel
-        );
-
-        opcionesRespuesta.appendChild(
-            botonReintentar
-        );
+    if (alFallarQuiz) {
+        alFallarQuiz(nivelQuizActual);
     }
+}
 }
 
 
@@ -214,8 +193,10 @@ export function iniciarQuiz(numeroNivel, preguntasNivel) {
 
 export function configurarQuiz(
     callbackCompletado,
-    callbackContinuar
+    callbackContinuar,
+    callbackFallo
 ) {
     alCompletarQuiz = callbackCompletado;
     alContinuarQuiz = callbackContinuar;
+    alFallarQuiz = callbackFallo;
 }

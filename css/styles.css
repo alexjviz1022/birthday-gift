@@ -403,6 +403,777 @@ body {
     }
 }
 
+/* =========================================
+   MAPA DE AVENTURA
+   ========================================= */
+
+.level-map {
+    position: relative;
+
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    overflow: hidden;
+
+    display: flex;
+    justify-content: center;
+
+    background-color: #100820;
+
+    isolation: isolate;
+}
+
+
+/* FONDO */
+
+.level-map__background {
+    position: absolute;
+    inset: 0;
+
+    background:
+        url("../img/level-map-bg.png")
+        center center / cover
+        no-repeat;
+
+    z-index: -2;
+}
+
+
+/* Oscurecimiento suave para UI */
+
+.level-map::after {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(10, 4, 25, 0.08),
+            rgba(10, 4, 25, 0.02) 65%,
+            rgba(10, 4, 25, 0.35)
+        );
+
+    pointer-events: none;
+
+    z-index: -1;
+}
+
+
+/* CONTENEDOR */
+
+.level-map__content {
+    position: relative;
+
+    width: 100%;
+    max-width: 430px;
+
+    min-height: 100dvh;
+}
+
+
+/* TÍTULO */
+
+.level-map__header {
+    position: absolute;
+
+    top: 2.5%;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    width: 90%;
+
+    text-align: center;
+
+    z-index: 10;
+
+    filter:
+        drop-shadow(0 3px 5px rgba(0, 0, 0, 0.8));
+}
+
+
+.level-map__header p {
+    color: #ffc96b;
+
+    font-family: Georgia, serif;
+
+    font-size: 0.85rem;
+
+    letter-spacing: 2px;
+}
+
+
+.level-map__header h1 {
+    margin-top: 3px;
+
+    color: #fff2dc;
+
+    font-family: Georgia, serif;
+
+    font-size: 1.7rem;
+
+    text-shadow:
+        0 0 10px rgba(177, 88, 255, 0.7);
+}
+
+
+/* RUTA */
+
+.level-map__route {
+    position: absolute;
+    inset: 0;
+}
+
+
+/* BOTONES DE NIVEL */
+
+.level-button {
+    position: absolute;
+
+    width: 58px;
+    height: 58px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 0;
+
+    color: #fff;
+
+    background:
+        radial-gradient(
+            circle,
+            #a35ee8 0%,
+            #66309c 58%,
+            #31164e 100%
+        );
+
+    border: 3px solid #e3b7ff;
+
+    border-radius: 50%;
+
+    box-shadow:
+        0 0 8px rgba(211, 138, 255, 0.95),
+        0 0 22px rgba(151, 60, 218, 0.65),
+        inset 0 0 12px rgba(255, 255, 255, 0.25);
+
+    font-family: Georgia, serif;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transform: translate(-50%, -50%);
+
+    transition:
+        transform 0.2s ease,
+        filter 0.2s ease;
+
+    z-index: 5;
+}
+
+
+.level-button:hover {
+    transform:
+        translate(-50%, -50%)
+        scale(1.08);
+}
+
+
+.level-button:active {
+    transform:
+        translate(-50%, -50%)
+        scale(0.94);
+}
+
+
+.level-button__number {
+    font-size: 1.4rem;
+
+    text-shadow:
+        0 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+
+/* POSICIONES SOBRE LAS PLATAFORMAS */
+
+/* plataforma inferior */
+
+.level-button--1 {
+    left: 61%;
+    top: 70%;
+}
+
+
+/* segunda */
+
+.level-button--2 {
+    left: 40%;
+    top: 61%;
+}
+
+
+/* tercera */
+
+.level-button--3 {
+    left: 48%;
+    top: 50%;
+}
+
+
+/* cuarta */
+
+.level-button--4 {
+    left: 48%;
+    top: 36%;
+}
+
+
+/* quinta */
+
+.level-button--5 {
+    left: 66%;
+    top: 25.5%;
+}
+
+
+/* CASTILLO / RECOMPENSAS */
+
+.level-button--rewards {
+    left: 70%;
+    top: 15%;
+
+    width: 68px;
+    height: 68px;
+
+    background:
+        radial-gradient(
+            circle,
+            #ffbd4a,
+            #b85b26 60%,
+            #55251c
+        );
+
+    border-color: #ffe5a0;
+
+    box-shadow:
+        0 0 12px rgba(255, 194, 86, 1),
+        0 0 30px rgba(255, 117, 47, 0.75);
+}
+
+
+.level-button__reward {
+    font-size: 1.7rem;
+}
+
+/* =========================================
+   ESTADOS DE LOS NIVELES
+   ========================================= */
+
+
+/* DISPONIBLE */
+
+.level-button--available {
+    color: #fff7dc;
+
+    background:
+        radial-gradient(
+            circle,
+            #b96df3 0%,
+            #7838b5 55%,
+            #3b195d 100%
+        );
+
+    border-color: #f0c8ff;
+
+    box-shadow:
+        0 0 10px rgba(227, 166, 255, 1),
+        0 0 26px rgba(168, 73, 235, 0.8),
+        inset 0 0 12px rgba(255, 255, 255, 0.25);
+
+    animation:
+        levelAvailableGlow
+        2s
+        ease-in-out
+        infinite;
+}
+
+
+/* BLOQUEADO */
+
+.level-button--locked {
+    color: #b9adc2;
+
+    background:
+        radial-gradient(
+            circle,
+            #4a3d52 0%,
+            #29202f 65%,
+            #17121c 100%
+        );
+
+    border-color: #66576d;
+
+    box-shadow:
+        0 4px 10px rgba(0, 0, 0, 0.55),
+        inset 0 0 10px rgba(0, 0, 0, 0.4);
+
+    filter: saturate(0.35);
+
+    opacity: 0.78;
+
+    cursor: default;
+
+    animation: none;
+}
+
+
+/* COMPLETADO */
+
+.level-button--completed {
+    color: #39250d;
+
+    background:
+        radial-gradient(
+            circle,
+            #fff3a5 0%,
+            #ffc95c 45%,
+            #b76a25 100%
+        );
+
+    border-color: #fff1ae;
+
+    box-shadow:
+        0 0 10px rgba(255, 226, 118, 1),
+        0 0 25px rgba(255, 172, 56, 0.8),
+        inset 0 0 10px rgba(255, 255, 255, 0.4);
+
+    text-shadow:
+        0 1px 2px rgba(255, 255, 255, 0.4);
+
+    animation: none;
+}
+
+
+/* PREMIOS BLOQUEADOS */
+
+.level-button--rewards-locked {
+    color: #b9adc2;
+
+    background:
+        radial-gradient(
+            circle,
+            #4b414e,
+            #28202d 65%,
+            #151118
+        );
+
+    border-color: #66576d;
+
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.65);
+
+    filter: saturate(0.25);
+
+    opacity: 0.8;
+
+    animation: none;
+}
+
+
+/* PREMIOS DESBLOQUEADOS */
+
+.level-button--rewards-available {
+    background:
+        radial-gradient(
+            circle,
+            #ffeaa0 0%,
+            #ffb83e 42%,
+            #a94e20 100%
+        );
+
+    border-color: #fff0aa;
+
+    box-shadow:
+        0 0 14px rgba(255, 222, 120, 1),
+        0 0 34px rgba(255, 139, 49, 0.95),
+        0 0 55px rgba(255, 88, 35, 0.45);
+
+    animation:
+        rewardUnlockedGlow
+        1.8s
+        ease-in-out
+        infinite;
+}
+
+
+/* ANIMACIONES */
+
+@keyframes levelAvailableGlow {
+
+    0%,
+    100% {
+        box-shadow:
+            0 0 8px rgba(227, 166, 255, 0.8),
+            0 0 20px rgba(168, 73, 235, 0.55);
+    }
+
+    50% {
+        box-shadow:
+            0 0 14px rgba(239, 196, 255, 1),
+            0 0 34px rgba(177, 84, 241, 0.95);
+    }
+}
+
+
+@keyframes rewardUnlockedGlow {
+
+    0%,
+    100% {
+        transform:
+            translate(-50%, -50%)
+            scale(1);
+
+        box-shadow:
+            0 0 12px rgba(255, 222, 120, 0.85),
+            0 0 26px rgba(255, 139, 49, 0.7);
+    }
+
+    50% {
+        transform:
+            translate(-50%, -50%)
+            scale(1.06);
+
+        box-shadow:
+            0 0 18px rgba(255, 237, 163, 1),
+            0 0 42px rgba(255, 139, 49, 1);
+    }
+}
+
+
+/* =========================================
+   SELECTOR DE PERSONAJES
+   ========================================= */
+
+.character-selector {
+    position: absolute;
+
+    bottom: 5.5%;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    width: 92%;
+
+    padding: 10px 12px 12px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(25, 12, 42, 0.94),
+            rgba(62, 29, 78, 0.92)
+        );
+
+    border: 1px solid rgba(229, 184, 255, 0.8);
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 8px 25px rgba(0, 0, 0, 0.55),
+        0 0 18px rgba(146, 70, 203, 0.35),
+        inset 0 0 12px rgba(255, 255, 255, 0.04);
+
+    backdrop-filter: blur(5px);
+
+    z-index: 10;
+}
+
+
+/* TÍTULO */
+
+.character-selector__title {
+    margin-bottom: 8px;
+
+    color: #ffe7bd;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size: 0.8rem;
+    font-weight: bold;
+
+    text-align: center;
+
+    letter-spacing: 1px;
+
+    text-shadow:
+        0 0 8px rgba(255, 191, 105, 0.35);
+}
+
+
+/* CONTENEDOR DE LOS 4 PERSONAJES */
+
+.character-selector__characters {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 7px;
+}
+
+
+/* TARJETA */
+
+.character-option {
+    position: relative;
+
+    min-width: 0;
+
+    padding: 4px 3px 6px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 3px;
+
+    color: #fff;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.10),
+            rgba(255, 255, 255, 0.03)
+        );
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.16);
+
+    border-radius: 12px;
+
+    overflow: hidden;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+/* RETRATO */
+
+.character-option__portrait {
+    position: relative;
+
+    width: 100%;
+    aspect-ratio: 1 / 1;
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+
+    overflow: hidden;
+
+    border-radius: 9px;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(151, 79, 192, 0.30),
+            rgba(24, 12, 37, 0.45)
+        );
+}
+
+
+.character-option__portrait img {
+    width: 110%;
+    height: 110%;
+
+    object-fit: contain;
+
+    object-position: center bottom;
+
+    display: block;
+
+    pointer-events: none;
+}
+
+
+/* NOMBRE */
+
+.character-option small {
+    color: #f8ebff;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size: 0.67rem;
+    font-weight: bold;
+
+    line-height: 1;
+
+    text-shadow:
+        0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+
+/* =========================================
+   LUKE SELECCIONADO
+   ========================================= */
+
+.character-option--active {
+    border-color: #ffd47a;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(147, 77, 180, 0.75),
+            rgba(71, 34, 92, 0.75)
+        );
+
+    box-shadow:
+        0 0 8px rgba(255, 210, 116, 0.75),
+        0 0 16px rgba(172, 84, 223, 0.55);
+
+    transform: translateY(-3px);
+}
+
+
+.character-option--active::after {
+    content: "✓";
+
+    position: absolute;
+
+    top: 5px;
+    right: 5px;
+
+    width: 18px;
+    height: 18px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: #38200d;
+
+    background: #ffd369;
+
+    border-radius: 50%;
+
+    font-size: 0.7rem;
+    font-weight: bold;
+
+    box-shadow:
+        0 0 8px rgba(255, 211, 105, 0.9);
+
+    z-index: 4;
+}
+
+
+/* =========================================
+   PERSONAJES SECRETOS
+   ========================================= */
+
+.character-option--locked {
+    opacity: 1;
+
+    cursor: default;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(30, 20, 38, 0.95),
+            rgba(12, 8, 18, 0.98)
+        );
+
+    border-color:
+        rgba(139, 110, 151, 0.35);
+
+    box-shadow:
+        inset 0 0 18px
+        rgba(0, 0, 0, 0.65);
+}
+
+
+/* Ocultamos completamente al personaje */
+
+.character-option--locked
+.character-option__portrait img {
+    opacity: 0;
+}
+
+
+/* Fondo misterioso */
+
+.character-option--locked
+.character-option__portrait {
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(91, 57, 109, 0.28),
+            rgba(10, 6, 15, 0.95) 70%
+        );
+}
+
+
+/* Símbolo misterioso */
+
+.character-option__mystery {
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    height: 100%;
+
+    color: rgba(211, 177, 226, 0.55);
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size: 1.7rem;
+    font-weight: bold;
+
+    text-shadow:
+        0 0 10px
+        rgba(177, 104, 211, 0.35);
+
+    z-index: 3;
+
+    pointer-events: none;
+}
+
+
+/* Nombre secreto */
+
+.character-option--locked small {
+    color:
+        rgba(220, 200, 229, 0.55);
+
+    letter-spacing: 2px;
+}
+
 
 /* CELULARES PEQUEÑOS */
 
@@ -856,6 +1627,64 @@ body {
     margin: 0 16px 18px;
 }
 
+/* =========================================
+   HISTORIA DE LOS NIVELES
+   ========================================= */
+
+.story-scene {
+    width: 100%;
+}
+
+.story-scene__image {
+    width: 100%;
+    aspect-ratio: 9 / 16;
+
+    margin-bottom: 20px;
+
+    background-color: var(--color-surface);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    border: 1px solid var(--color-primary);
+    border-radius: 20px;
+
+    overflow: hidden;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.story-scene__placeholder {
+    color: var(--color-text);
+    opacity: 0.7;
+}
+
+.story-scene__text {
+    margin-bottom: 20px;
+}
+
+.story-scene__chapter {
+    margin-bottom: 8px;
+
+    color: var(--color-secondary);
+
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.story-scene__title {
+    margin-bottom: 12px;
+
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.7rem;
+}
+
+.story-scene__description {
+    line-height: 1.5;
+}
+
 .level-intro {
     min-height: 100vh;
     display: flex;
@@ -868,25 +1697,6 @@ body {
     width: 100%;
     max-width: 500px;
     text-align: center;
-}
-
-.level-intro__image {
-    min-height: 500px;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    margin-bottom: 24px;
-
-    border: 1px solid var(--color-primary);
-    border-radius: 20px;
-
-    background-color: var(--color-surface);
-}
-
-.level-intro__image p {
-    font-size: 2rem;
 }
 
 #level-intro-start {

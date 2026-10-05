@@ -50,333 +50,472 @@
         </div>
 
     </main>
-<main class="screen level-map hidden" id="level-map">
-    <div class="level-map__card">
+    <main class="screen level-map hidden" id="level-map">
 
-        <h2>Mapa de niveles</h2>
+        <div class="level-map__background"></div>
 
-        <div class="level-map__levels">
-            <button class="level-button" id="level-1">
-                Nivel 1
-            </button>
+        <div class="level-map__content">
 
-            <button class="level-button" id="level-2">
-                🔒 Nivel 2
-            </button>
+            <header class="level-map__header">
+                <p>✦ Una aventura encantada ✦</p>
+                <h1>Luke & Floky</h1>
+            </header>
 
-            <button class="level-button" id="level-3">
-                🔒 Nivel 3
-            </button>
+            <div class="level-map__route">
 
-            <button class="level-button" id="level-4">
-                🔒 Nivel 4
-            </button>
+                <button class="level-button level-button--1" id="level-1">
+                    <span class="level-button__number">1</span>
+                </button>
 
-            <button class="level-button" id="level-5">
-                🔒 Nivel 5
-            </button>
+                <button class="level-button level-button--2" id="level-2">
+                    <span class="level-button__number">2</span>
+                </button>
 
-            <button class="level-button" id="rewards-button">
-                🔒 Premios
-            </button>
+                <button class="level-button level-button--3" id="level-3">
+                    <span class="level-button__number">3</span>
+                </button>
+
+                <button class="level-button level-button--4" id="level-4">
+                    <span class="level-button__number">4</span>
+                </button>
+
+                <button class="level-button level-button--5" id="level-5">
+                    <span class="level-button__number">5</span>
+                </button>
+
+                <button
+                    class="level-button level-button--rewards"
+                    id="rewards-button"
+                >
+                    <span class="level-button__reward">🎁</span>
+                </button>
+
+            </div>
+
+            <section class="character-selector">
+
+                <p class="character-selector__title">
+                    ✦ Selecciona tu personaje ✦
+                </p>
+
+                <div class="character-selector__characters">
+
+                    <!-- LUKE -->
+                    <button
+                        class="character-option character-option--active"
+                        id="character-luke"
+                        data-character="luke"
+                    >
+                        <div class="character-option__portrait">
+                            <img
+                                src="img/characters/luke.png"
+                                alt="Luke"
+                            >
+                        </div>
+
+                        <small>Luke</small>
+                    </button>
+
+
+                    <!-- FLOKY -->
+                    <button
+                        class="character-option character-option--locked"
+                        id="character-floky"
+                        data-character="floky"
+                        disabled
+                    >
+                        <div class="character-option__portrait">
+                            <img
+                                src="img/characters/floky.png"
+                                alt="Floky"
+                            >
+
+                            <span class="character-option__mystery">
+                                ?
+                            </span>
+                        </div>
+
+                        <small>???</small>
+                    </button>
+
+
+                    <!-- JACK -->
+                    <button
+                        class="character-option character-option--locked"
+                        id="character-jack"
+                        data-character="jack"
+                        disabled
+                    >
+                        <div class="character-option__portrait">
+                            <img
+                                src="img/characters/jack.png"
+                                alt="Jack"
+                            >
+
+                            <span class="character-option__mystery">
+                                ?
+                            </span>
+                        </div>
+
+                        <small>???</small>
+                    </button>
+
+
+                    <!-- VENOM -->
+                    <button
+                        class="character-option character-option--locked"
+                        id="character-venom"
+                        data-character="venom"
+                        disabled
+                    >
+                        <div class="character-option__portrait">
+                            <img
+                                src="img/characters/venom.png"
+                                alt="Venom"
+                            >
+
+                            <span class="character-option__mystery">
+                                ?
+                            </span>
+                        </div>
+
+                        <small>???</small>
+                    </button>
+
+                </div>
+
+            </section>
+
         </div>
 
-    </div>
-</main>
-<main class="screen level-intro hidden" id="level-intro">
-    <div class="level-intro__content">
+    </main>
+    <main class="screen level-intro hidden" id="level-intro">
+        <div class="level-intro__content">
 
-        <div class="level-intro__image">
-            <p id="level-intro-placeholder">Nivel</p>
+            <div class="story-scene">
+
+                <div class="story-scene__image" id="story-image">
+                    <p class="story-scene__placeholder">
+                        Ilustración de la escena
+                    </p>
+                </div>
+
+                <div class="story-scene__text">
+                    <p class="story-scene__chapter" id="story-chapter">
+                        Nivel 1
+                    </p>
+
+                    <h2 class="story-scene__title" id="story-title">
+                        El comienzo de la aventura
+                    </h2>
+
+                    <p class="story-scene__description" id="story-description">
+                        Luke y Floky continúan su camino...
+                    </p>
+                </div>
+
+            </div>
+
+            <button
+                class="welcome__button"
+                id="story-next"
+            >
+                Siguiente
+            </button>
+
+            <button
+                class="welcome__button hidden"
+                id="level-intro-start"
+            >
+                Comenzar nivel
+            </button>
+
+            <button
+                class="answer-button"
+                id="level-intro-back"
+            >
+                Volver al mapa
+            </button>
+
         </div>
+    </main>
+    <main class="screen countdown hidden" id="countdown-screen">
+        <div class="countdown__content">
+            <p id="countdown-text">3</p>
+        </div>
+    </main>
+    <main class="screen game hidden" id="game-screen">
+        <div class="game__card">
 
-        <button class="welcome__button" id="level-intro-start">
-            Comenzar nivel
-        </button>
+            <p id="question-number"></p>
 
-        <button class="answer-button" id="level-intro-back">
+            <p id="score"></p>
+
+            <h2 id="question-text"></h2>
+
+            <p id="feedback"></p>
+
+            <div id="memory" class="hidden">
+                <p id="memory-text"></p>
+            </div>
+
+            <div id="answer-options"></div>
+
+            <button class="answer-button" id="back-to-map">
             Volver al mapa
-        </button>
-
-    </div>
-</main>
-<main class="screen countdown hidden" id="countdown-screen">
-    <div class="countdown__content">
-        <p id="countdown-text">3</p>
-    </div>
-</main>
-<main class="screen game hidden" id="game-screen">
-    <div class="game__card">
-
-        <p id="question-number"></p>
-
-        <p id="score"></p>
-
-        <h2 id="question-text"></h2>
-
-        <p id="feedback"></p>
-
-        <div id="memory" class="hidden">
-            <p id="memory-text"></p>
-        </div>
-
-        <div id="answer-options"></div>
-
-        <button class="answer-button" id="back-to-map">
-        Volver al mapa
-        </button>
-
-    </div>
-</main>
-<main class="screen runner hidden" id="runner-screen">
-    <div class="runner__card">
-
-        <h2>Nivel 2</h2>
-        <p>Corre y evita los obstáculos</p>
-
-        <div class="runner__game" id="runner-game">
-            <div class="runner__player" id="runner-player"></div>
-            <div class="runner__obstacle" id="runner-obstacle"></div>
-        </div>
-
-        <p id="runner-progress">Progreso: 0%</p>
-
-        <button class="answer-button" id="runner-jump">
-            Saltar
-        </button>
-
-        <button class="answer-button hidden" id="runner-retry">
-        Intentar de nuevo
-        </button>
-
-        <button class="answer-button hidden" id="runner-next-level">
-            Siguiente nivel
-        </button>
-
-        <button class="answer-button" id="runner-back-to-map">
-            Volver al mapa
-        </button>
-
-    </div>
-</main>
-<main class="screen catch hidden" id="catch-screen">
-    <div class="catch__card">
-
-        <h2>Nivel 4</h2>
-
-        <p id="catch-progress">
-            Progreso: 0%
-        </p>
-
-        <p id="catch-time">
-        Tiempo: 30s
-        </p>
-
-        <div class="catch__game" id="catch-game">
-            <div class="catch__player" id="catch-player"></div>
-        </div>
-
-        <div class="catch__controls">
-            <button class="answer-button" id="catch-left">
-                ←
             </button>
 
-            <button class="answer-button" id="catch-right">
-                →
+        </div>
+    </main>
+    <main class="screen runner hidden" id="runner-screen">
+        <div class="runner__card">
+
+            <h2>Nivel 2</h2>
+            <p>Corre y evita los obstáculos</p>
+
+            <div class="runner__game" id="runner-game">
+                <div class="runner__player" id="runner-player"></div>
+                <div class="runner__obstacle" id="runner-obstacle"></div>
+            </div>
+
+            <p id="runner-progress">Progreso: 0%</p>
+
+            <button class="answer-button" id="runner-jump">
+                Saltar
             </button>
 
-            <button class="answer-button hidden" id="catch-retry">
+            <button class="answer-button hidden" id="runner-retry">
             Intentar de nuevo
             </button>
-        </div>
-        
-        <button class="answer-button hidden" id="catch-next-level">
-            Siguiente nivel
-        </button>
 
-        <button class="answer-button" id="catch-back-to-map">
-            Volver al mapa
-        </button>
-
-    </div>
-</main>
-<main class="screen final hidden" id="final-screen">
-    <div class="final__card">
-
-        <p class="final__symbol">☾</p>
-
-        <h1>¡Muchas felicidades! 🖤</h1>
-
-        <p>
-            Has completado todos los niveles.
-        </p>
-
-        <p>
-            Pero esto todavía no termina...
-        </p>
-
-        <p>
-            Has desbloqueado nuevas recompensas.
-        </p>
-
-        <button class="welcome__button" id="final-continue">
-            Descubrir mis recompensas
-        </button>
-
-    </div>
-</main>
-<main class="screen rewards hidden" id="rewards-screen">
-    <div class="rewards__card">
-
-        <h1>Tus recompensas 🖤</h1>
-
-        <p>
-            Todo esto ya es tuyo.
-        </p>
-
-        <div class="rewards__options">
-
-            <button class="reward-button" id="roulette-button">
-                <span>🎡</span>
-                <strong>Ruleta</strong>
-                <small>Canjea una recompensa</small>
-            </button>
-            <button class="reward-button" id="coupons-button">
-                <span>🎟️</span>
-                <strong>Mis cupones</strong>
-                <small>Revisa tus recompensas disponibles</small>
+            <button class="answer-button hidden" id="runner-next-level">
+                Siguiente nivel
             </button>
 
-            <button class="reward-button" id="videos-button">
-                <span>🎬</span>
-                <strong>Videos</strong>
-                <small>Algo especial para ti</small>
+            <button class="answer-button" id="runner-back-to-map">
+                Volver al mapa
             </button>
 
         </div>
+    </main>
+    <main class="screen catch hidden" id="catch-screen">
+        <div class="catch__card">
 
-        <button class="answer-button" id="rewards-back">
-            Volver al mapa
-        </button>
+            <h2>Nivel 4</h2>
 
-    </div>
-</main>
-<main class="screen roulette hidden" id="roulette-screen">
-    <div class="roulette__card">
+            <p id="catch-progress">
+                Progreso: 0%
+            </p>
 
-        <h1>Ruleta de recompensas 🎡</h1>
+            <p id="catch-time">
+            Tiempo: 30s
+            </p>
 
-        <p>Gira la ruleta y descubre qué te toca...</p>
+            <div class="catch__game" id="catch-game">
+                <div class="catch__player" id="catch-player"></div>
+            </div>
 
-        <div class="roulette__wheel" id="roulette-wheel">
-            <div class="roulette__pointer">▼</div>
+            <div class="catch__controls">
+                <button class="answer-button" id="catch-left">
+                    ←
+                </button>
+
+                <button class="answer-button" id="catch-right">
+                    →
+                </button>
+
+                <button class="answer-button hidden" id="catch-retry">
+                Intentar de nuevo
+                </button>
+            </div>
+            
+            <button class="answer-button hidden" id="catch-next-level">
+                Siguiente nivel
+            </button>
+
+            <button class="answer-button" id="catch-back-to-map">
+                Volver al mapa
+            </button>
+
         </div>
+    </main>
+    <main class="screen final hidden" id="final-screen">
+        <div class="final__card">
 
-        <button class="welcome__button" id="spin-button">
-            Girar ruleta
-        </button>
+            <p class="final__symbol">☾</p>
 
-        <div class="roulette__result hidden" id="roulette-result">
-            <p id="roulette-category"></p>
-            <h2 id="roulette-prize"></h2>
+            <h1>¡Muchas felicidades! 🖤</h1>
+
+            <p>
+                Has completado todos los niveles.
+            </p>
+
+            <p>
+                Pero esto todavía no termina...
+            </p>
+
+            <p>
+                Has desbloqueado nuevas recompensas.
+            </p>
+
+            <button class="welcome__button" id="final-continue">
+                Descubrir mis recompensas
+            </button>
+
         </div>
+    </main>
+    <main class="screen rewards hidden" id="rewards-screen">
+        <div class="rewards__card">
 
-        <button class="answer-button" id="roulette-back">
-            Volver a premios
-        </button>
+            <h1>Tus recompensas 🖤</h1>
 
-    </div>
-    <div class="coupon-modal hidden" id="coupon-modal">
+            <p>
+                Todo esto ya es tuyo.
+            </p>
 
-    <div class="coupon-modal__content">
+            <div class="rewards__options">
 
-        <p id="coupon-modal-title">🎟️ ¡Nuevo cupón!</p>
+                <button class="reward-button" id="roulette-button">
+                    <span>🎡</span>
+                    <strong>Ruleta</strong>
+                    <small>Canjea una recompensa</small>
+                </button>
+                <button class="reward-button" id="coupons-button">
+                    <span>🎟️</span>
+                    <strong>Mis cupones</strong>
+                    <small>Revisa tus recompensas disponibles</small>
+                </button>
 
-        <p id="coupon-modal-category"></p>
-
-        <h2 id="coupon-modal-prize"></h2>
-
-        <p id="coupon-modal-message">
-            Tu recompensa ha sido guardada en Mis cupones.
-        </p>
-
-        <button class="welcome__button" id="coupon-modal-close">
-            Guardar cupón 🖤
-        </button>
-
-    </div>
-</div>
-</main>
-<main class="screen coupons hidden" id="coupons-screen">
-    <div class="coupons__card">
-
-        <h1>Mis cupones 🎟️</h1>
-
-        <p>
-            Estas son tus recompensas disponibles.
-        </p>
-
-        <div id="coupons-list"></div>
-
-        <button class="answer-button" id="coupons-back">
-            Volver a premios
-        </button>
-
-    </div>
-</main>
-<main class="screen videos hidden" id="videos-screen">
-    <div class="videos__card">
-
-        <h1>Videos para ti 🎬</h1>
-
-        <p>
-            Algunas cosas que hice especialmente para ti 🖤
-        </p>
-
-        <div class="videos__list">
-
-            <a
-                class="video-card"
-                href="https://www.youtube.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-            >
-                <div class="video-card__poster">
+                <button class="reward-button" id="videos-button">
                     <span>🎬</span>
-                </div>
+                    <strong>Videos</strong>
+                    <small>Algo especial para ti</small>
+                </button>
 
-                <h2>Video 1</h2>
+            </div>
 
-                <p>
-                    Aquí irá una pequeña descripción del primer video.
-                </p>
-            </a>
-
-            <a
-                class="video-card"
-                href="https://www.youtube.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-            >
-                <div class="video-card__poster">
-                    <span>🎬</span>
-                </div>
-
-                <h2>Video 2</h2>
-
-                <p>
-                    Aquí irá una pequeña descripción del segundo video.
-                </p>
-            </a>
+            <button class="answer-button" id="rewards-back">
+                Volver al mapa
+            </button>
 
         </div>
+    </main>
+    <main class="screen roulette hidden" id="roulette-screen">
+        <div class="roulette__card">
 
-        <button class="answer-button" id="videos-back">
-            Volver a premios
-        </button>
+            <h1>Ruleta de recompensas 🎡</h1>
 
+            <p>Gira la ruleta y descubre qué te toca...</p>
+
+            <div class="roulette__wheel" id="roulette-wheel">
+                <div class="roulette__pointer">▼</div>
+            </div>
+
+            <button class="welcome__button" id="spin-button">
+                Girar ruleta
+            </button>
+
+            <div class="roulette__result hidden" id="roulette-result">
+                <p id="roulette-category"></p>
+                <h2 id="roulette-prize"></h2>
+            </div>
+
+            <button class="answer-button" id="roulette-back">
+                Volver a premios
+            </button>
+
+        </div>
+        <div class="coupon-modal hidden" id="coupon-modal">
+
+        <div class="coupon-modal__content">
+
+            <p id="coupon-modal-title">🎟️ ¡Nuevo cupón!</p>
+
+            <p id="coupon-modal-category"></p>
+
+            <h2 id="coupon-modal-prize"></h2>
+
+            <p id="coupon-modal-message">
+                Tu recompensa ha sido guardada en Mis cupones.
+            </p>
+
+            <button class="welcome__button" id="coupon-modal-close">
+                Guardar cupón 🖤
+            </button>
+
+        </div>
     </div>
-</main>
+    </main>
+    <main class="screen coupons hidden" id="coupons-screen">
+        <div class="coupons__card">
+
+            <h1>Mis cupones 🎟️</h1>
+
+            <p>
+                Estas son tus recompensas disponibles.
+            </p>
+
+            <div id="coupons-list"></div>
+
+            <button class="answer-button" id="coupons-back">
+                Volver a premios
+            </button>
+
+        </div>
+    </main>
+    <main class="screen videos hidden" id="videos-screen">
+        <div class="videos__card">
+
+            <h1>Videos para ti 🎬</h1>
+
+            <p>
+                Algunas cosas que hice especialmente para ti 🖤
+            </p>
+
+            <div class="videos__list">
+
+                <a
+                    class="video-card"
+                    href="https://www.youtube.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <div class="video-card__poster">
+                        <span>🎬</span>
+                    </div>
+
+                    <h2>Video 1</h2>
+
+                    <p>
+                        Aquí irá una pequeña descripción del primer video.
+                    </p>
+                </a>
+
+                <a
+                    class="video-card"
+                    href="https://www.youtube.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <div class="video-card__poster">
+                        <span>🎬</span>
+                    </div>
+
+                    <h2>Video 2</h2>
+
+                    <p>
+                        Aquí irá una pequeña descripción del segundo video.
+                    </p>
+                </a>
+
+            </div>
+
+            <button class="answer-button" id="videos-back">
+                Volver a premios
+            </button>
+
+        </div>
+    </main>
     <script type="module" src="js/app.js"></script>
 </body>
 </html>
