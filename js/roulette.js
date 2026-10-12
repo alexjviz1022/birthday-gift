@@ -5,7 +5,10 @@ const categoriasRuleta = [
         premios: [
             "Masaje de pies",
             "Dulce favorito",
-            "Premio azul de prueba 3"
+            "Película de tu elección",
+            "Cartita",
+            "Pan de dulce",
+            "Papas"
         ]
     },
     {
@@ -14,7 +17,10 @@ const categoriasRuleta = [
         premios: [
             "Una rosa",
             "Paseo en el parque",
-            "Premio amarillo de prueba 3"
+            "Cocinarte",
+            "Ida al centro",
+            "Algo de prichos",
+            "Una recarga"
         ]
     },
     {
@@ -22,8 +28,11 @@ const categoriasRuleta = [
         probabilidad: 15,
         premios: [
             "Salida al cine",
-            "Cena",
-            "Premio verde de prueba 3"
+            "Cena en restaurante",
+            "Comida en restaurante",
+            "Desayuno en restaurante",
+            "Exprimir los granos que quieras por 30 minutos",
+            "Canción catada para ti"
         ]
     },
     {
@@ -32,7 +41,10 @@ const categoriasRuleta = [
         premios: [
             "Un juguete",
             "Una muñeca",
-            "Premio rojo de prueba 3"
+            "Objeto miniatura",
+            "Six Flags",
+            "Obra de teatro",
+            "Lo que se te ocurra"
         ]
     }
 ];

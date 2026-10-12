@@ -7,6 +7,16 @@
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+    <button
+        id="music-toggle"
+        class="music-toggle hidden"
+        type="button"
+        aria-label="Silenciar música"
+        aria-pressed="false"
+        title="Silenciar música"
+    >
+        <span id="music-toggle-icon" aria-hidden="true">🔊</span>
+    </button>
     <main class="screen welcome" id="welcome-screen">
 
         <div class="welcome__background"></div>
@@ -24,7 +34,7 @@
             </div>
             <div class="welcome__characters">
                 <img
-                    src="img/luke-floky.png"
+                    src="img/luke-floky.webp"
                     alt="Luke y Floky"
                     class="welcome__characters-image"
                 >
@@ -245,277 +255,812 @@
         </div>
     </main>
     <main class="screen game hidden" id="game-screen">
+
+        <div class="game__ambient"></div>
+
         <div class="game__card">
 
-            <p id="question-number"></p>
+            <div class="game__header">
 
-            <p id="score"></p>
+                <div class="game__header-top">
+                    <span class="game__level" id="quiz-level">
+                        NIVEL 1
+                    </span>
 
-            <h2 id="question-text"></h2>
+                    <span
+                        class="game__question-counter"
+                        id="question-number"
+                    >
+                        Pregunta 1 / 5
+                    </span>
+                </div>
 
-            <p id="feedback"></p>
+                <div class="game__progress-bar">
+                    <div
+                        class="game__progress-fill"
+                        id="quiz-progress-fill"
+                    ></div>
+                </div>
 
-            <div id="memory" class="hidden">
-                <p id="memory-text"></p>
+                <p
+                    class="game__score"
+                    id="score"
+                >
+                    Aciertos: 0 / 5
+                </p>
+
             </div>
 
-            <div id="answer-options"></div>
 
-            <button class="answer-button" id="back-to-map">
-            Volver al mapa
+            <div class="game__question">
+
+                <span class="game__question-label">
+                    PREGUNTA
+                </span>
+
+                <h2 id="question-text"></h2>
+
+            </div>
+
+
+            <p
+                class="game__feedback"
+                id="feedback"
+            ></p>
+
+
+            <div class="game__memory hidden" id="memory">
+
+                <span class="game__memory-symbol">✦</span>
+
+                <img
+                    id="memory-image"
+                    class="game__memory-image hidden"
+                    alt="Fotografía de un recuerdo especial"
+                >
+
+                <p id="memory-text"></p>
+
+            </div>
+
+
+            <div
+                class="game__answers"
+                id="answer-options"
+            ></div>
+
+
+            <button
+                class="game__back"
+                id="back-to-map"
+            >
+                ← Volver al mapa
             </button>
 
         </div>
+
     </main>
     <main class="screen runner hidden" id="runner-screen">
+
         <div class="runner__card">
 
-            <h2>Nivel 2</h2>
-            <p>Corre y evita los obstáculos</p>
+            <div class="runner__header">
+                <span class="runner__level">NIVEL 2</span>
+                <h2>Huida del bosque</h2>
+                <p>¡Salta los obstáculos y consigue escapar!</p>
+            </div>
+
+            <div class="runner__progress-area">
+                <div class="runner__progress-bar">
+                    <div
+                        class="runner__progress-fill"
+                        id="runner-progress-fill"
+                    ></div>
+                </div>
+
+                <p id="runner-progress">
+                    Progreso: 0%
+                </p>
+            </div>
 
             <div class="runner__game" id="runner-game">
-                <div class="runner__player" id="runner-player"></div>
-                <div class="runner__obstacle" id="runner-obstacle"></div>
+
+
+                <div class="runner__player" id="runner-player">
+                    <img
+                        class="runner__player-image hidden"
+                        id="runner-character-image"
+                        alt="Personaje seleccionado"
+                    >
+
+                    <span
+                        class="runner__player-placeholder"
+                        id="runner-character-placeholder"
+                    >
+                        🐈
+                    </span>
+                </div>
+
+                <div
+                    class="runner__obstacle"
+                    id="runner-obstacle"
+                ></div>
+
+                <div class="runner__ground"></div>
+
             </div>
 
-            <p id="runner-progress">Progreso: 0%</p>
+            <div class="runner__status" id="runner-status">
+                ¡Corre!
+            </div>
 
-            <button class="answer-button" id="runner-jump">
-                Saltar
+            <div class="runner__controls">
+
+                <button
+                    class="runner__jump-button"
+                    id="runner-jump"
+                >
+                    <span>↑</span>
+                    SALTAR
+                </button>
+
+                <button
+                    class="answer-button hidden"
+                    id="runner-retry"
+                >
+                    Intentar de nuevo
+                </button>
+
+                <button
+                    class="answer-button hidden"
+                    id="runner-next-level"
+                >
+                    Continuar
+                </button>
+
+            </div>
+
+            <button
+                class="runner__back game-back-arrow"
+                id="runner-back-to-map"
+                aria-label="Volver al mapa"
+                title="Volver al mapa"
+            >
+                <svg viewBox="0 0 64 64" aria-hidden="true">
+                    <path
+                        d="M7 32 L30 9 Q34 5 34 12
+                        L34 22 L55 22 Q59 22 59 26
+                        L59 38 Q59 42 55 42
+                        L34 42 L34 52 Q34 59 30 55 Z"
+                        fill="currentColor"
+                    />
+                </svg>
             </button>
-
-            <button class="answer-button hidden" id="runner-retry">
-            Intentar de nuevo
-            </button>
-
-            <button class="answer-button hidden" id="runner-next-level">
-                Siguiente nivel
-            </button>
-
-            <button class="answer-button" id="runner-back-to-map">
-                Volver al mapa
-            </button>
-
         </div>
+
     </main>
     <main class="screen catch hidden" id="catch-screen">
+
         <div class="catch__card">
 
-            <h2>Nivel 4</h2>
+            <div class="catch__header">
+                <span class="catch__level">NIVEL 4</span>
 
-            <p id="catch-progress">
-                Progreso: 0%
-            </p>
+                <h2>Atrapa los recuerdos</h2>
 
-            <p id="catch-time">
-            Tiempo: 30s
-            </p>
-
-            <div class="catch__game" id="catch-game">
-                <div class="catch__player" id="catch-player"></div>
+                <p>
+                    Atrapa los objetos correctos antes
+                    de que se acabe el tiempo.
+                </p>
             </div>
 
+
+            <div class="catch__hud">
+
+                <div class="catch__hud-item">
+                    <span>PROGRESO</span>
+                    <strong id="catch-progress">
+                        0%
+                    </strong>
+                </div>
+
+                <div class="catch__hud-item">
+                    <span>TIEMPO</span>
+                    <strong id="catch-time">
+                        30s
+                    </strong>
+                </div>
+
+            </div>
+
+
+            <div class="catch__progress-bar">
+                <div
+                    class="catch__progress-fill"
+                    id="catch-progress-fill"
+                ></div>
+            </div>
+
+
+            <div class="catch__game" id="catch-game">
+
+                <div class="catch__moon"></div>
+
+                <div class="catch__tree-placeholder">
+                    ♠
+                </div>
+
+                <div class="catch__player" id="catch-player">
+                    <img
+                        class="catch__player-image hidden"
+                        id="catch-character-image"
+                        alt="Personaje seleccionado"
+                    >
+
+                    <span
+                        class="catch__player-placeholder"
+                        id="catch-character-placeholder"
+                    >
+                        🐈
+                    </span>
+                </div>
+
+                <div class="catch__ground"></div>
+
+            </div>
+
+
+            <p
+                class="catch__status"
+                id="catch-status"
+            >
+                ¡Atrápalos!
+            </p>
+
+
             <div class="catch__controls">
-                <button class="answer-button" id="catch-left">
+
+                <button
+                    class="catch__move-button"
+                    id="catch-left"
+                    aria-label="Mover a la izquierda"
+                >
                     ←
                 </button>
 
-                <button class="answer-button" id="catch-right">
+                <button
+                    class="catch__move-button"
+                    id="catch-right"
+                    aria-label="Mover a la derecha"
+                >
                     →
                 </button>
 
-                <button class="answer-button hidden" id="catch-retry">
-                Intentar de nuevo
-                </button>
             </div>
-            
-            <button class="answer-button hidden" id="catch-next-level">
-                Siguiente nivel
+
+
+            <button
+                class="answer-button hidden"
+                id="catch-retry"
+            >
+                Intentar de nuevo
             </button>
 
-            <button class="answer-button" id="catch-back-to-map">
-                Volver al mapa
+
+            <button
+                class="answer-button hidden"
+                id="catch-next-level"
+            >
+                Continuar
             </button>
+
+            <button
+                class="catch__back game-back-arrow"
+                id="catch-back-to-map"
+                aria-label="Volver al mapa"
+                title="Volver al mapa"
+            >
+                <svg viewBox="0 0 64 64" aria-hidden="true">
+                    <path
+                        d="M7 32 L30 9 Q34 5 34 12
+                        L34 22 L55 22 Q59 22 59 26
+                        L59 38 Q59 42 55 42
+                        L34 42 L34 52 Q34 59 30 55 Z"
+                        fill="currentColor"
+                    />
+                </svg>
+            </button>
+            
 
         </div>
+
     </main>
     <main class="screen final hidden" id="final-screen">
-        <div class="final__card">
 
-            <p class="final__symbol">☾</p>
+    <div class="final__card">
 
-            <h1>¡Muchas felicidades! 🖤</h1>
+        <p class="final__eyebrow">
+            ✦ AVENTURA COMPLETADA ✦
+        </p>
 
-            <p>
-                Has completado todos los niveles.
-            </p>
+        <div class="final__symbol">🏰</div>
 
-            <p>
-                Pero esto todavía no termina...
-            </p>
+        <h1>¡Muchas felicidades! 🖤</h1>
 
-            <p>
-                Has desbloqueado nuevas recompensas.
-            </p>
+        <h2>¡Lo lograron!</h2>
 
-            <button class="welcome__button" id="final-continue">
-                Descubrir mis recompensas
-            </button>
+        <p>
+            Luke y Floky superaron las cinco pruebas
+            y finalmente llegaron al castillo.
+        </p>
 
-        </div>
-    </main>
+        <div class="final__divider">✦ 🐾 ✦</div>
+
+        <p class="final__message">
+            Pero la magia todavía no termina...
+            ¡Has desbloqueado un lugar lleno
+            de sorpresas especiales!
+        </p>
+
+        <button class="welcome__button" id="final-continue">
+            🎁 Descubrir mis recompensas
+        </button>
+
+    </div>
+
+</main>
     <main class="screen rewards hidden" id="rewards-screen">
+
+        <div class="rewards__ambient"></div>
+
         <div class="rewards__card">
 
-            <h1>Tus recompensas 🖤</h1>
+            <header class="rewards__header">
+                <span class="rewards__eyebrow">
+                    ✦ EL CASTILLO ✦
+                </span>
 
-            <p>
-                Todo esto ya es tuyo.
-            </p>
+                <h1>Recompensas desbloqueadas</h1>
+
+                <p>
+                    La aventura terminó, pero todavía
+                    quedan algunas sorpresas para ti. 🖤
+                </p>
+            </header>
+
 
             <div class="rewards__options">
 
-                <button class="reward-button" id="roulette-button">
-                    <span>🎡</span>
-                    <strong>Ruleta</strong>
-                    <small>Canjea una recompensa</small>
-                </button>
-                <button class="reward-button" id="coupons-button">
-                    <span>🎟️</span>
-                    <strong>Mis cupones</strong>
-                    <small>Revisa tus recompensas disponibles</small>
+                <button
+                    class="reward-button reward-button--roulette"
+                    id="roulette-button"
+                >
+                    <span class="reward-button__icon">
+                        🎡
+                    </span>
+
+                    <span class="reward-button__text">
+                        <strong>Ruleta de premios</strong>
+                        <small>
+                            Una oportunidad cada día
+                        </small>
+                    </span>
+
+                    <span class="reward-button__arrow">
+                        ›
+                    </span>
                 </button>
 
-                <button class="reward-button" id="videos-button">
-                    <span>🎬</span>
-                    <strong>Videos</strong>
-                    <small>Algo especial para ti</small>
-                </button>
+
+                <div class="rewards__secondary">
+
+                    <button
+                        class="reward-button reward-button--small"
+                        id="coupons-button"
+                    >
+                        <span class="reward-button__icon">
+                            🎟️
+                        </span>
+
+                        <span class="reward-button__text">
+                            <strong>Mis cupones</strong>
+                            <small>
+                                Tus premios
+                            </small>
+                        </span>
+                    </button>
+
+
+                    <button
+                        class="reward-button reward-button--small"
+                        id="videos-button"
+                    >
+                        <span class="reward-button__icon">
+                            🎬
+                        </span>
+
+                        <span class="reward-button__text">
+                            <strong>Recuerdos</strong>
+                            <small>
+                                Videos para ti
+                            </small>
+                        </span>
+                    </button>
+
+                </div>
 
             </div>
 
-            <button class="answer-button" id="rewards-back">
+
+            <p class="rewards__secret">
+                ☾ Gracias por llegar hasta aquí ☽
+            </p>
+
+
+            <button
+                class="answer-button"
+                id="rewards-back"
+            >
                 Volver al mapa
             </button>
 
         </div>
+
     </main>
     <main class="screen roulette hidden" id="roulette-screen">
+
+        <div class="roulette__ambient"></div>
+
         <div class="roulette__card">
 
-            <h1>Ruleta de recompensas 🎡</h1>
+            <header class="roulette__header">
 
-            <p>Gira la ruleta y descubre qué te toca...</p>
+                <span class="roulette__eyebrow">
+                    ✦ RECOMPENSA DIARIA ✦
+                </span>
 
-            <div class="roulette__wheel" id="roulette-wheel">
-                <div class="roulette__pointer">▼</div>
+                <h1>Ruleta de premios</h1>
+
+                <p>
+                    La suerte decidirá qué recompensa
+                    te llevas hoy.
+                </p>
+
+            </header>
+
+
+            <div class="roulette__stage">
+
+                <div class="roulette__pointer">
+                    ▼
+                </div>
+
+                <div
+                    class="roulette__wheel"
+                    id="roulette-wheel"
+                >
+
+                    <div class="roulette__center">
+                        ♥
+                    </div>
+
+                </div>
+
             </div>
 
-            <button class="welcome__button" id="spin-button">
-                Girar ruleta
+
+            <p class="roulette__daily">
+                ☾ Una tirada disponible cada día
+            </p>
+
+
+            <button
+                class="roulette__spin"
+                id="spin-button"
+            >
+                ✦ GIRAR ✦
             </button>
 
-            <div class="roulette__result hidden" id="roulette-result">
+
+            <div
+                class="roulette__result hidden"
+                id="roulette-result"
+            >
                 <p id="roulette-category"></p>
                 <h2 id="roulette-prize"></h2>
             </div>
 
-            <button class="answer-button" id="roulette-back">
+
+            <button
+                class="answer-button"
+                id="roulette-back"
+            >
                 Volver a premios
             </button>
 
         </div>
-        <div class="coupon-modal hidden" id="coupon-modal">
 
-        <div class="coupon-modal__content">
 
-            <p id="coupon-modal-title">🎟️ ¡Nuevo cupón!</p>
+        <div
+            class="coupon-modal hidden"
+            id="coupon-modal"
+        >
 
-            <p id="coupon-modal-category"></p>
+            <div class="coupon-modal__content">
 
-            <h2 id="coupon-modal-prize"></h2>
+                <span class="coupon-modal__ornament">
+                    ✦ ☾ ✦
+                </span>
 
-            <p id="coupon-modal-message">
-                Tu recompensa ha sido guardada en Mis cupones.
-            </p>
+                <p
+                    class="coupon-modal__title"
+                    id="coupon-modal-title"
+                >
+                    🎟️ ¡Nuevo cupón!
+                </p>
 
-            <button class="welcome__button" id="coupon-modal-close">
-                Guardar cupón 🖤
-            </button>
+                <p
+                    class="coupon-modal__category"
+                    id="coupon-modal-category"
+                ></p>
+
+                <h2 id="coupon-modal-prize"></h2>
+
+                <p
+                    class="coupon-modal__message"
+                    id="coupon-modal-message"
+                >
+                    Tu recompensa ha sido guardada
+                    en Mis cupones.
+                </p>
+
+                <button
+                    class="welcome__button"
+                    id="coupon-modal-close"
+                >
+                    Guardar cupón 🖤
+                </button>
+
+            </div>
 
         </div>
-    </div>
+
     </main>
     <main class="screen coupons hidden" id="coupons-screen">
-        <div class="coupons__card">
+
+    <div class="coupons__ambient"></div>
+
+    <div class="coupons__card">
+
+        <header class="coupons__header">
+            <span class="coupons__eyebrow">
+                ✦ COLECCIÓN DE PREMIOS ✦
+            </span>
 
             <h1>Mis cupones 🎟️</h1>
 
             <p>
-                Estas son tus recompensas disponibles.
+                Aquí se guardarán las recompensas
+                que vayas consiguiendo en la ruleta.
+            </p>
+        </header>
+
+
+        <div
+            class="coupons__list"
+            id="coupons-list"
+        ></div>
+
+
+        <p class="coupons__footer-text">
+            ☾ Cada premio guarda una pequeña sorpresa ☽
+        </p>
+
+
+        <button
+            class="answer-button"
+            id="coupons-back"
+        >
+            Volver a premios
+        </button>
+
+    </div>
+    <div
+        class="redeem-modal hidden"
+        id="redeem-modal"
+    >
+        <div class="redeem-modal__content">
+
+            <span class="redeem-modal__ornament">
+                ✦ ☾ ✦
+            </span>
+
+            <p
+                class="redeem-modal__label"
+                id="redeem-modal-label"
+            >
+                CANJEAR RECOMPENSA
             </p>
 
-            <div id="coupons-list"></div>
+            <div class="redeem-modal__ticket">
+                🎟️
+            </div>
 
-            <button class="answer-button" id="coupons-back">
-                Volver a premios
-            </button>
+            <h2 id="redeem-modal-prize"></h2>
 
-        </div>
-    </main>
-    <main class="screen videos hidden" id="videos-screen">
-        <div class="videos__card">
-
-            <h1>Videos para ti 🎬</h1>
-
-            <p>
-                Algunas cosas que hice especialmente para ti 🖤
+            <p
+                class="redeem-modal__message"
+                id="redeem-modal-message"
+            >
+                ¿Quieres utilizar esta recompensa ahora?
             </p>
 
-            <div class="videos__list">
+            <div class="redeem-modal__actions">
 
-                <a
-                    class="video-card"
-                    href="https://www.youtube.com/"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                <button
+                    class="redeem-modal__confirm"
+                    id="redeem-confirm"
                 >
-                    <div class="video-card__poster">
-                        <span>🎬</span>
-                    </div>
+                    🖤 Sí, canjear
+                </button>
 
-                    <h2>Video 1</h2>
-
-                    <p>
-                        Aquí irá una pequeña descripción del primer video.
-                    </p>
-                </a>
-
-                <a
-                    class="video-card"
-                    href="https://www.youtube.com/"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                <button
+                    class="redeem-modal__cancel"
+                    id="redeem-cancel"
                 >
-                    <div class="video-card__poster">
-                        <span>🎬</span>
-                    </div>
-
-                    <h2>Video 2</h2>
-
-                    <p>
-                        Aquí irá una pequeña descripción del segundo video.
-                    </p>
-                </a>
+                    Cancelar
+                </button>
 
             </div>
 
-            <button class="answer-button" id="videos-back">
-                Volver a premios
-            </button>
+        </div>
+    </div>
+</main>
+
+
+<main class="screen videos hidden" id="videos-screen">
+
+    <div class="videos__ambient"></div>
+
+    <div class="videos__card">
+
+        <header class="videos__header">
+
+            <span class="videos__eyebrow">
+                ✦ Videos para bebé ✦
+            </span>
+
+            <h1>Para que ya no tengas que buscar los links 🖤</h1>
+
+            <p>
+                <A>Espera más sorpresas</A>
+            </p>
+
+        </header>
+
+
+        <div class="videos__list">
+
+
+            <!-- VIDEO 1 -->
+
+            <a
+                class="video-card"
+                href="https://youtu.be/yX_RxVnZE_A"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+
+                <div class="video-card__poster">
+
+
+                        <img
+                            src="img/videos-min/video-2025.webp"
+                            alt="Recuerdo especial"
+                        >
+    
+
+
+                    <span class="video-card__play">
+                        ▶
+                    </span>
+
+                </div>
+
+
+                <div class="video-card__content">
+
+                    <span class="video-card__number">
+                        Regalo 2025
+                    </span>
+
+                    <h2>
+                        Alex Y Luke en busca del Regalo de Karen
+                    </h2>
+
+                    <p>
+                        El gran lider Luke convoca a sus sicarios para conseguir el mejor regalo para su Karen junto a su amigo Alex.
+                    </p>
+
+                    <span class="video-card__watch">
+                        Ver →
+                    </span>
+
+                </div>
+
+            </a>
+
+
+            <!-- VIDEO 2 -->
+
+            <a
+                class="video-card"
+                href="https://www.youtube.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+
+                <div class="video-card__poster">
+
+                    <!--
+                        Imagen futura:
+
+                        <img
+                            src="img/rewards/video-2.webp"
+                            alt="Mensaje especial"
+                        >
+                    -->
+
+                    <div class="video-card__placeholder">
+                        <span>🎬</span>
+                        <small>
+                            Proximamente
+                        </small>
+                    </div>
+
+                    <span class="video-card__play">
+                        ▶
+                    </span>
+
+                </div>
+
+
+                <div class="video-card__content">
+
+                    <span class="video-card__number">
+                        Proximamente
+                    </span>
+
+                    <h2>
+                        Ya viene
+                    </h2>
+
+                    <p>
+                        No tarda mucho
+                    </p>
+
+                    <span class="video-card__watch">
+                        No tarda nada enserio solo que aun no jeje
+                    </span>
+
+                </div>
+
+            </a>
+
 
         </div>
-    </main>
+
+
+        <button
+            class="answer-button"
+            id="videos-back"
+        >
+            Volver a premios
+        </button>
+
+    </div>
+
+</main>
     <script type="module" src="js/app.js"></script>
 </body>
 </html>

@@ -1,7 +1,25 @@
 const listaCupones =
     document.getElementById("coupons-list");
+const modalCanje =
+    document.getElementById("redeem-modal");
+
+const modalCanjeEtiqueta =
+    document.getElementById("redeem-modal-label");
+
+const modalCanjePremio =
+    document.getElementById("redeem-modal-prize");
+
+const modalCanjeMensaje =
+    document.getElementById("redeem-modal-message");
+
+const botonConfirmarCanje =
+    document.getElementById("redeem-confirm");
+
+const botonCancelarCanje =
+    document.getElementById("redeem-cancel");
 
 let cuponesDesbloqueados = [];
+let cuponSeleccionadoParaCanje = null;
 
 const diasValidezCupon = 7;
 
@@ -124,20 +142,102 @@ export function mostrarCupones() {
 
 
 function canjearCupon(cuponSeleccionado) {
-    const confirmarCanje = confirm(
-        `¿Seguro que quieres canjear "${cuponSeleccionado.premio}"?`
+    cuponSeleccionadoParaCanje =
+        cuponSeleccionado;
+
+    modalCanjeEtiqueta.textContent =
+        "CANJEAR RECOMPENSA";
+
+    modalCanjePremio.textContent =
+        cuponSeleccionado.premio;
+
+    modalCanjeMensaje.textContent =
+        "¿Quieres utilizar esta recompensa ahora? Una vez canjeada, desaparecerá de tus cupones disponibles.";
+
+    botonConfirmarCanje.textContent =
+        "🖤 Sí, canjear";
+
+    botonCancelarCanje.textContent =
+        "Cancelar";
+
+    botonCancelarCanje.classList.remove(
+        "hidden"
     );
 
-    if (!confirmarCanje) {
-        return;
-    }
-
-    cuponesDesbloqueados =
-        cuponesDesbloqueados.filter((cupon) => {
-            return cupon !== cuponSeleccionado;
-        });
-
-    guardarCuponesEnStorage();
-
-    mostrarCupones();
+    modalCanje.classList.remove("hidden");
 }
+
+let canjeConfirmado = false;
+
+
+botonCancelarCanje.addEventListener(
+    "click",
+    () => {
+        cuponSeleccionadoParaCanje = null;
+        canjeConfirmado = false;
+
+        modalCanje.classList.add("hidden");
+    }
+);
+
+
+botonConfirmarCanje.addEventListener(
+    "click",
+    () => {
+
+        if (canjeConfirmado) {
+            canjeConfirmado = false;
+
+            modalCanje.classList.add("hidden");
+
+            return;
+        }
+
+
+        if (!cuponSeleccionadoParaCanje) {
+            return;
+        }
+
+
+        const premioCanjeado =
+            cuponSeleccionadoParaCanje.premio;
+
+
+        cuponesDesbloqueados =
+            cuponesDesbloqueados.filter(
+                (cupon) => {
+                    return (
+                        cupon !==
+                        cuponSeleccionadoParaCanje
+                    );
+                }
+            );
+
+
+        guardarCuponesEnStorage();
+
+        mostrarCupones();
+
+
+        cuponSeleccionadoParaCanje = null;
+
+        canjeConfirmado = true;
+
+
+        modalCanjeEtiqueta.textContent =
+            "✦ RECOMPENSA CANJEADA ✦";
+
+        modalCanjePremio.textContent =
+            premioCanjeado;
+
+        modalCanjeMensaje.textContent =
+            "Tu cupón ha sido utilizado. Espero que disfrutes mucho tu recompensa. 🖤";
+
+        botonConfirmarCanje.textContent =
+            "Cerrar";
+
+        botonCancelarCanje.classList.add(
+            "hidden"
+        );
+    }
+);
